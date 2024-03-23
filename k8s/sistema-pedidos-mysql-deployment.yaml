@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sistema-pedidos-mysql
+  namespace: sistema-pedidos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sistema-pedidos-mysql
+  template:
+    metadata:
+      labels:
+        app: sistema-pedidos-mysql
+    spec:
+      containers:
+        - name: sistema-pedidos-mysql
+          image: mysql:8.0.33
+          env:
+            - name: MYSQL_DATABASE
+              value: sistema_pedidos
+            - name: MYSQL_USER
+              value: sistema_pedidos
+            - name: MYSQL_PASSWORD
+              value: sistema_pedidos
+            - name: MYSQL_ROOT_PASSWORD
+              value: rootsql
+            - name: SERVICE_NAME
+              value: mysql
+          ports:
+            - containerPort: 3306
+          readinessProbe:
+            exec:
+              command:
+                - "mysqladmin"
+                - "ping"
+                - "-h"
+                - "localhost"
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sistema-pedidos-mysql-service
+  namespace: sistema-pedidos
+spec:
+  selector:
+    app: sistema-pedidos-mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP

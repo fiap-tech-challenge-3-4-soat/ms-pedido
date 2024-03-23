@@ -1,0 +1,53 @@
+spring:
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        password: sistema_pedidos
+        url: jdbc:mysql://localhost:33080/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true
+        username: sistema_pedidos
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL8Dialect
+        defer-datasource-initialization: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                format_sql: true
+                show_sql: true
+    sql:
+        init:
+            continue-on-error: true
+            encoding: UTF-8
+            mode: always
+    data:
+      redis:
+          host: localhost
+          port: 6379
+    cloud:
+      openfeign:
+        client:
+            config:
+                mercadopago:
+                    default-request-headers:
+                        Authorization:
+                            - Bearer TEST-6416668675808261-012515-7dac31f086dd3bdf5d7137ace77d0ad1-1654958216
+
+app:
+    jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
+app-jwt-expiration-milliseconds: 604800000
+
+springdoc:
+    swagger-ui:
+        operations-sorter: method
+        tags-sorter: alpha
+
+rest:
+    service:
+        mercadopago:
+            url: https://api.mercadopago.com
+            user-id: 1654958216
+            pos-id: FIAP001POS001
+            notification-url: "https://b321-187-19-179-63.ngrok-free.app/api/v1/pedidos/confirmar-pagamento"
+            
+cache:
+    config:
+        ttl: 60

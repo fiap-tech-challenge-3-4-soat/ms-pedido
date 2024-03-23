@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sistema-pedidos-network-configmap
+  namespace: sistema-pedidos
+data:
+  DATABASE_URL: "jdbc:mysql://sistema-pedidos-mysql-service:3306/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true"

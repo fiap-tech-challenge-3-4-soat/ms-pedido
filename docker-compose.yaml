@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  sistema-pedidos-mysql:
+    image: mysql:8.0.33
+    container_name: sistema-pedidos-mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "33080:3306"
+    environment:
+      MYSQL_DATABASE: sistema_pedidos
+      MYSQL_USER: sistema_pedidos
+      MYSQL_PASSWORD: sistema_pedidos
+      MYSQL_ROOT_PASSWORD: rootsql
+      SERVICE_NAME: mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - sistema-pedidos-network
+
+  sistema-pedidos-app:
+    build: .
+    container_name: sistema-pedidos-app
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://sistema-pedidos-mysql:3306/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true"
+    depends_on:
+      sistema-pedidos-mysql:
+        condition: service_healthy
+    networks:
+      - sistema-pedidos-network
+  
+  redis-server:
+    hostname: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sistema-pedidos-network
+
+networks:
+  sistema-pedidos-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

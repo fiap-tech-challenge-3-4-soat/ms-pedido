@@ -1,0 +1,30 @@
+spring:
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:33080/sistema_pedidos_test?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+        password: rootsql
+        username: root
+    
+    flyway:
+        locations: classpath:db/migration
+    jpa:
+        hibernate:
+            ddl-auto: update
+    data:
+        redis:
+            repositories:
+                enabled: false
+            host: localhost
+            port: 6379
+
+app:
+    jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
+app-jwt-expiration-milliseconds: 604800000
+
+rest:
+    service:
+        mercadopago:
+            url: sdfssdf
+            user-id: dsfsdfsd
+            pos-id: ddsdfsdfs
+            notification-url: dfsdfsdfs

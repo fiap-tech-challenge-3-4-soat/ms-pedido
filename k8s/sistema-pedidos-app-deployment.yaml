@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sistema-pedidos-app
+  namespace: sistema-pedidos
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sistema-pedidos-app
+  template:
+    metadata:
+      labels:
+        app: sistema-pedidos-app
+    spec:
+      containers:
+        - name: sistema-pedidos-app
+          image: docker.io/thomarabelo/fiap-tech_challenge:latest
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://sistema-pedidos-mysql-service:3306/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true"
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sistema-pedidos-app-service
+  namespace: sistema-pedidos
+spec:
+  selector:
+    app: sistema-pedidos-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sistema-pedidos-app-hpa
+  namespace: sistema-pedidos
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sistema-pedidos-app
+  minReplicas: 2
+  maxReplicas: 10  # Adjust based on your requirements
+  targetCPUUtilizationPercentage: 70  # Adjust based on your requirements
