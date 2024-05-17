@@ -10,7 +10,6 @@ import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.ProdutoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
 import br.com.tech.challenge.sistemapedido.usecase.pedido.*;
-import br.com.tech.challenge.sistemapedido.usecase.produto.BuscarProdutoUseCase;
 import br.com.tech.challenge.sistemapedido.usecase.usuario.ObterUsuarioUseCase;
 import jakarta.inject.Named;
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ItemPedidoModelMapper {
-    private final ProdutoModelMapper produtoMapper;
 
     public ItemPedido toDomain(ItemPedidoModel itemPedido) {
         return ItemPedido.builder()

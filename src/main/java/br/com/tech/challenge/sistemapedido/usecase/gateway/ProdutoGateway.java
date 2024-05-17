@@ -7,7 +7,4 @@ import java.util.Optional;
 
 public interface ProdutoGateway {
     Produto buscarPorId(Long id);
-    List<Produto> buscarTodos(); //TODO remover
-    Produto salvar(Produto produto); //TODO remover
-    void excluir(Produto produto); //TODO remover
 }
