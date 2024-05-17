@@ -1,21 +1,28 @@
 package br.com.tech.challenge.sistemapedido.domain;
 
-import br.com.tech.challenge.sistemapedido.domain.vo.Observacao;
-import br.com.tech.challenge.sistemapedido.domain.vo.Quantidade;
+import br.com.tech.challenge.sistemapedido.domain.vo.*;
 
 public class ItemPedido {
     private Long id;
+    private Long idProduto;
+    private Nome nome;
+    private Categoria categoria;
+    private Descricao descricao;
+    private Preco preco;
     private Quantidade quantidade;
     private Observacao observacao;
-    private Produto produto;
     private Pedido pedido;
 
 
     public ItemPedido(ItemPedidoBuilder itemPedidoBuilder) {
         this.id = itemPedidoBuilder.id;
+        this.idProduto = itemPedidoBuilder.idProduto;
+        this.nome = itemPedidoBuilder.nome;
+        this.categoria = itemPedidoBuilder.categoria;
+        this.descricao = itemPedidoBuilder.descricao;
+        this.preco = itemPedidoBuilder.preco;
         this.quantidade = itemPedidoBuilder.quantidade;
         this.observacao = itemPedidoBuilder.observacao;
-        this.produto = itemPedidoBuilder.produto;
         this.pedido = itemPedidoBuilder.pedido;
     }
 
@@ -27,16 +34,32 @@ public class ItemPedido {
         return id;
     }
 
+    public Long getIdProduto() {
+        return idProduto;
+    }
+
+    public Nome getNome() {
+        return nome;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public Descricao getDescricao() {
+        return descricao;
+    }
+
+    public Preco getPreco() {
+        return preco;
+    }
+
     public Quantidade getQuantidade() {
         return quantidade;
     }
 
     public Observacao getObservacao() {
         return observacao;
-    }
-
-    public Produto getProduto() {
-        return produto;
     }
 
     public Pedido getPedido() {
@@ -49,13 +72,42 @@ public class ItemPedido {
 
     public static class ItemPedidoBuilder {
         private Long id;
+        private Long idProduto;
+        private Nome nome;
+        private Categoria categoria;
+        private Descricao descricao;
+        private Preco preco;
         private Quantidade quantidade;
         private Observacao observacao;
-        private Produto produto;
         private Pedido pedido;
 
         public ItemPedidoBuilder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public ItemPedidoBuilder idProduto(Long idProduto) {
+            this.idProduto = idProduto;
+            return this;
+        }
+
+        public ItemPedidoBuilder nome(Nome nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public ItemPedidoBuilder categoria(Categoria categoria) {
+            this.categoria = categoria;
+            return this;
+        }
+
+        public ItemPedidoBuilder descricao(Descricao descricao) {
+            this.descricao = descricao;
+            return this;
+        }
+
+        public ItemPedidoBuilder preco(Preco preco) {
+            this.preco = preco;
             return this;
         }
 
@@ -66,11 +118,6 @@ public class ItemPedido {
 
         public ItemPedidoBuilder observacao(Observacao observacao) {
             this.observacao = observacao;
-            return this;
-        }
-
-        public ItemPedidoBuilder produto(Produto produto) {
-            this.produto = produto;
             return this;
         }
 

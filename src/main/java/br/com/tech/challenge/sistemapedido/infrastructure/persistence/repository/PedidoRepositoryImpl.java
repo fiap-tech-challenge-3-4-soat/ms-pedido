@@ -39,7 +39,6 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public Pedido save(Pedido pedido) {
-        //TODO verificar o salvar
         var itensModel = pedido.getItens()
                 .stream()
                 .map(itemPedidoMapper::toModel)

@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  sistema-pedidos-mysql:
+  ms-pedido-mysql:
     image: mysql:8.0.33
-    container_name: sistema-pedidos-mysql
+    container_name: ms-pedido-mysql
     restart: unless-stopped
     tty: true
     ports:
@@ -21,20 +21,20 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     networks:
-      - sistema-pedidos-network
+      - ms-pedido-network
 
-  sistema-pedidos-app:
-    build: .
-    container_name: sistema-pedidos-app
-    ports:
-      - "8081:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:mysql://sistema-pedidos-mysql:3306/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true"
-    depends_on:
-      sistema-pedidos-mysql:
-        condition: service_healthy
-    networks:
-      - sistema-pedidos-network
+#  ms-pedido-app:
+#    build: .
+#    container_name: sistema-pedido-app
+#    ports:
+#      - "8081:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: "jdbc:mysql://ms-pedido-mysql:3306/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true"
+#    depends_on:
+#      ms-pedido-mysql:
+#        condition: service_healthy
+#    networks:
+#      - ms-pedido-network
   
   redis-server:
     hostname: redis
@@ -42,10 +42,10 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - sistema-pedidos-network
+      - ms-pedido-network
 
 networks:
-  sistema-pedidos-network:
+  ms-pedido-network:
     driver: bridge
 
 volumes:

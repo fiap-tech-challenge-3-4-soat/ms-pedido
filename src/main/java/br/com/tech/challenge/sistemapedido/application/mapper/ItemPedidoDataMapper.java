@@ -13,14 +13,10 @@ import java.util.List;
 @Named
 public class ItemPedidoDataMapper {
     public ItemPedido toDomain(ItemProdutoDTO itemPedido) {
-        var produto = Produto.builder()
-                .id(itemPedido.idProduto())
-                .build();
-
         return ItemPedido.builder()
+                .idProduto(itemPedido.idProduto())
                 .quantidade(new Quantidade(itemPedido.quantidade()))
                 .observacao(new Observacao(itemPedido.observacao()))
-                .produto(produto)
                 .build();
     }
 
@@ -31,10 +27,10 @@ public class ItemPedidoDataMapper {
     }
 
     public ItemPedidoDTO toDTO(ItemPedido item) {
-        return new ItemPedidoDTO(item.getProduto().getNome().toString(),
-                item.getProduto().getDescricao().toString(),
-                item.getProduto().getCategoria(),
-                item.getProduto().getPreco().getPreco(),
+        return new ItemPedidoDTO(item.getNome().toString(),
+                item.getDescricao().toString(),
+                item.getCategoria(),
+                item.getPreco().getPreco(),
                 item.getQuantidade().getQuantidade(),
                 item.getObservacao().toString());
     }

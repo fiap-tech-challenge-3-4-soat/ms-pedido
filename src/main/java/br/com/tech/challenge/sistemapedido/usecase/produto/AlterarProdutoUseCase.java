@@ -14,8 +14,7 @@ public class AlterarProdutoUseCase {
     }
 
     public Produto executar(Long id, Produto produtoAlterado) {
-        var produtoAtual = this.produtoGateway.buscarPorId(id)
-                .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
+        var produtoAtual = this.produtoGateway.buscarPorId(id);
 
         var produtoAtualizado = atualizarDados(produtoAlterado, produtoAtual);
 

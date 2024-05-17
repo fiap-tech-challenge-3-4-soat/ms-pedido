@@ -35,9 +35,8 @@ public class PedidoController {
     }
 
     public CadastrarPedidoResponse criar(PedidoRequest request) {
-        var buscarProdutoUseCase = new BuscarProdutoUseCase(this.produtoGateway);
         var obterUsuarioUseCase = new ObterUsuarioUseCase(this.usuarioGateway);
-        var criarPedidoUseCase = new CriarPedidoUseCase(buscarProdutoUseCase, obterUsuarioUseCase, this.pedidoGateway);
+        var criarPedidoUseCase = new CriarPedidoUseCase(obterUsuarioUseCase, this.pedidoGateway, this.produtoGateway);
 
         var pedido = criarPedidoUseCase.executar(itemPedidoMapper.toDomainList(request.itens()), request.cpf());
 

@@ -14,7 +14,6 @@ public class BuscarProdutoUseCase {
     }
 
     public Produto executar(Long id) {
-        return produtoGateway.buscarPorId(id)
-                .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
+        return produtoGateway.buscarPorId(id);
     }
 }

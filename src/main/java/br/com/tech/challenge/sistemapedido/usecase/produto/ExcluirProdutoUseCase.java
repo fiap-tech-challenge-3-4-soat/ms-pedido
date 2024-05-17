@@ -13,8 +13,7 @@ public class ExcluirProdutoUseCase {
     }
 
     public void executar(Long id) {
-        var produto = this.produtoGateway.buscarPorId(id)
-                .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
+        var produto = this.produtoGateway.buscarPorId(id);
 
         produtoGateway.excluir(produto);
     }

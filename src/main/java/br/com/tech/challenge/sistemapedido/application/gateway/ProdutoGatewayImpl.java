@@ -1,24 +1,30 @@
 package br.com.tech.challenge.sistemapedido.application.gateway;
 
+import br.com.tech.challenge.sistemapedido.application.mapper.ProdutoDataMapper;
 import br.com.tech.challenge.sistemapedido.application.repository.ProdutoRepository;
+import br.com.tech.challenge.sistemapedido.application.service.ProdutoService;
 import br.com.tech.challenge.sistemapedido.domain.Produto;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.ProdutoGateway;
 import jakarta.inject.Named;
 
 import java.util.List;
-import java.util.Optional;
 
 @Named
 public class ProdutoGatewayImpl implements ProdutoGateway {
     private final ProdutoRepository repository;
+    private final ProdutoService produtoService;
+    private final ProdutoDataMapper produtoMapper;
 
-    public ProdutoGatewayImpl(ProdutoRepository repository) {
+    public ProdutoGatewayImpl(ProdutoRepository repository, ProdutoService produtoService, ProdutoDataMapper produtoMapper) {
         this.repository = repository;
+        this.produtoService = produtoService;
+        this.produtoMapper = produtoMapper;
     }
 
     @Override
-    public Optional<Produto> buscarPorId(Long id) {
-        return repository.findById(id);
+    public Produto buscarPorId(Long id) {
+        var produtoDTO = produtoService.buscarProdutoPorId(id);
+        return produtoMapper.toDomain(produtoDTO);
     }
 
     @Override

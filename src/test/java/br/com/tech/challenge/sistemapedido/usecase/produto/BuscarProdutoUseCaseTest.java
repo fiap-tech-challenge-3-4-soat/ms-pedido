@@ -30,7 +30,7 @@ class BuscarProdutoUseCaseTest {
         var produto = TestObjects.getProduto("Produto Teste");
 
         when(gateway.buscarPorId(anyLong()))
-                .thenReturn(Optional.of(produto));
+                .thenReturn(produto);
 
         underTest.executar(1L);
 
@@ -42,7 +42,7 @@ class BuscarProdutoUseCaseTest {
         var idProduto = 2L;
 
         when(gateway.buscarPorId(anyLong()))
-                .thenReturn(Optional.empty());
+                .thenReturn(null);
 
         assertThrows(ProdutoNaoEncontradoException.class, () ->
                 underTest.executar(idProduto));
