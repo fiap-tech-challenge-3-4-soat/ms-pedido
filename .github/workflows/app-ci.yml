@@ -52,7 +52,7 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
         ports:
-          - 33080:3306
+          - 3308:3306
     steps:
       - uses: actions/checkout@v4
         with:
@@ -79,8 +79,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn clean verify
-          
+        run: mvn clean verify -DskipBuildDocker
+  
   build:
     needs: qualidade-de-codigo
     runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean package -DskipTests jib:dockerBuild --file pom.xml
+      run: mvn clean package -DskipTests -DskipBuildDocker  #jib:dockerBuild --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
