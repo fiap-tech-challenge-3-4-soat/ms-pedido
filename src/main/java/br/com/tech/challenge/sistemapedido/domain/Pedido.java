@@ -63,6 +63,10 @@ public class Pedido {
         return Boolean.TRUE.equals(pago);
     }
 
+    public void adicionarItem(ItemPedido item) {
+        this.itens.add(item);
+    }
+
     public void adicionarItens(List<ItemPedido> itens) {
         this.itens.clear();
         this.itens.addAll(itens);

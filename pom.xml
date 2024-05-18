@@ -137,29 +137,11 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.5</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includes>
-                        <include>**/*IT</include>
-                    </includes>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
                 <configuration>
+                    <skip>${skipBuildDocker}</skip>
                     <from>
                         <image>openjdk:17-oracle</image>
                         <platforms>
@@ -207,17 +189,19 @@
                 </executions>
             </plugin>
 
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <excludes>
-                        <exclude>**/infrastructure/**/*</exclude>
-                        <exclude>**/ApplicationExceptionHandler.class</exclude>
                         <exclude>**/SistemaPedidoApplication.class</exclude>
                     </excludes>
                 </configuration>
+
                 <executions>
                     <execution>
                         <id>pre-unit-test</id>
@@ -225,10 +209,11 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <destFile>${basedir}/target/coverage-reports/jacoco.exec</destFile>
-                            <excludes>*MethodAccess</excludes>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                            <propertyName>surefireArgLine</propertyName>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>post-unit-test</id>
                         <phase>test</phase>
@@ -236,11 +221,91 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <dataFile>${basedir}/target/coverage-reports/jacoco.exec</dataFile>
-                            <outputDirectory>${basedir}/target/coverage-reports</outputDirectory>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco_aggregation.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>post-unit-merge</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>**/coverage-reports/*.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco_aggregation.exec</destFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                            <propertyName>failsafeArgLine</propertyName>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>post-integration-merge</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>**/coverage-reports/*.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco_aggregation.exec</destFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco_aggregation.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>${skipUnitTests}</skipTests>
+                    <argLine>${surefireArgLine}</argLine>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <skipTests>${skipIntegrationTests}</skipTests>
+                    <argLine>${failsafeArgLine}</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>
