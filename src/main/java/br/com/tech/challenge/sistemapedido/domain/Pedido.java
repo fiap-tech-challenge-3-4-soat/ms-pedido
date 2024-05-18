@@ -63,6 +63,10 @@ public class Pedido {
         return Boolean.TRUE.equals(pago);
     }
 
+    public void adicionarItem(ItemPedido item) {
+        this.itens.add(item);
+    }
+
     public void adicionarItens(List<ItemPedido> itens) {
         this.itens.clear();
         this.itens.addAll(itens);
@@ -74,7 +78,7 @@ public class Pedido {
     public void calcularTotal() {
         var valorTotal = this.itens.stream()
                 .map(itemPedido ->
-                        itemPedido.getProduto().getPreco().getPreco()
+                        itemPedido.getPreco().getPreco()
                                 .multiply(new BigDecimal(itemPedido.getQuantidade().getQuantidade())))
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);

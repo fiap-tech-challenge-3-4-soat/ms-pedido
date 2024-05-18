@@ -30,6 +30,16 @@ public class ProdutoDataMapper {
                 .build();
     }
 
+    public Produto toDomain(ProdutoDTO produtoDTO) {
+        return Produto.builder()
+                .id(produtoDTO.id())
+                .nome(new Nome(produtoDTO.nome()))
+                .categoria(produtoDTO.categoria())
+                .descricao(new Descricao(produtoDTO.descricao()))
+                .preco(new Preco(produtoDTO.preco()))
+                .build();
+    }
+
     public List<ProdutoDTO> toList(List<Produto> produtos) {
         return produtos.stream()
                 .map(this::toDTO)

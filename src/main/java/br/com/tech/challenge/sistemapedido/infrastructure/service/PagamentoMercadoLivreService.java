@@ -102,12 +102,12 @@ public class PagamentoMercadoLivreService implements PagamentoService {
     private List<ItemTO> obterItems(List<ItemPedido> itemsPedido) {
         return itemsPedido.stream()
                 .map(itemPedido -> ItemTO.builder()
-                        .title(itemPedido.getProduto().getNome().toString())
-                        .description(itemPedido.getProduto().getDescricao().toString())
-                        .unitPrice(itemPedido.getProduto().getPreco().getPreco())
+                        .title(itemPedido.getNome().toString())
+                        .description(itemPedido.getDescricao().toString())
+                        .unitPrice(itemPedido.getPreco().getPreco())
                         .quantity(itemPedido.getQuantidade().getQuantidade())
                         .unitMeasure("unit")
-                        .totalAmount(itemPedido.getProduto().getPreco().getPreco().multiply(new BigDecimal(itemPedido.getQuantidade().getQuantidade())))
+                        .totalAmount(itemPedido.getPreco().getPreco().multiply(new BigDecimal(itemPedido.getQuantidade().getQuantidade())))
                         .build())
                 .toList();
     }

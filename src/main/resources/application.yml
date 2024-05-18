@@ -47,6 +47,9 @@ rest:
             user-id: 1654958216
             pos-id: FIAP001POS001
             notification-url: "https://b321-187-19-179-63.ngrok-free.app/api/v1/pedidos/confirmar-pagamento"
+        ms-produto:
+            url: http://localhost:8082
+            context: v1
             
 cache:
     config:

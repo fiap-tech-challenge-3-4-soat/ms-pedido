@@ -39,20 +39,20 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public Pedido save(Pedido pedido) {
-        //TODO verificar o salvar
+        var pedidoModel = pedidoRepository.save(pedidoMapper.toModel(pedido));
+
         var itensModel = pedido.getItens()
                 .stream()
                 .map(itemPedidoMapper::toModel)
                 .map(item -> {
-                    item.setPedido(pedidoMapper.toModel(pedido));
+                    item.setPedido(pedidoModel);
                     return item;
                 })
                 .toList();
 
         itensModel = itemPedidoRepository.saveAll(itensModel);
-        var pedidoModel = pedidoMapper.toModel(pedido);
         pedidoModel.setItens(itensModel);
-        pedidoModel = pedidoRepository.save(pedidoModel);
+
         return pedidoMapper.toDomain(pedidoModel);
     }
 }

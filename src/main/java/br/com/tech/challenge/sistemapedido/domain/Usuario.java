@@ -50,4 +50,8 @@ public class Usuario {
     public Set<Papel> getPapeis() {
         return papeis;
     }
+
+    public void setPapeis(Set<Papel> papeis) {
+        this.papeis = papeis;
+    }
 }

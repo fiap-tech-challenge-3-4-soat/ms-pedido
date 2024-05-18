@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CadastrarPedidoResponse {
-    private Long idPedido;
+    private final Long idPedido;
 
     public CadastrarPedidoResponse(Long idPedido) {
         this.idPedido = idPedido;
