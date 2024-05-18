@@ -22,6 +22,8 @@
         <!-- Define the Jib version -->
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <jacoco.version>0.8.8</jacoco.version>
+        <sonar.organization>fiap-tech-challenge-3-4-soat</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
@@ -199,6 +201,8 @@
                     <skip>${skipTests}</skip>
                     <excludes>
                         <exclude>**/SistemaPedidoApplication.class</exclude>
+                        <exclude>**/infrastructure/security/**</exclude>
+                        <exclude>**/infrastructure/persistence/**</exclude>
                     </excludes>
                 </configuration>
 

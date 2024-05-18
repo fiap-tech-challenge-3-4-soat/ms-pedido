@@ -63,7 +63,7 @@ class PedidoControllerTest {
         this.pedido = TestObjects.getPedido();
         pedido.adicionarItem(itemPedido);
         this.produto = TestObjects.getProduto("Produto Teste");
-        this.pedidoDTO = TestObjects.getProdutoDTO(pedido);
+        this.pedidoDTO = TestObjects.getPedidoDTO(pedido);
     }
 
     @Test
@@ -80,7 +80,7 @@ class PedidoControllerTest {
         assertThat(response.getIdPedido()).isEqualTo(pedido.getId());
 
         verify(request).itens();
-        verify(pedidoGateway, times(2)).salvar(any(Pedido.class));
+        verify(pedidoGateway).salvar(any(Pedido.class));
         verify(produtoGateway).buscarPorId(anyLong());
         verify(usuarioGateway, never()).buscarPorCpf(anyString());
     }
@@ -104,7 +104,7 @@ class PedidoControllerTest {
         assertThat(response.getIdPedido()).isEqualTo(pedido.getId());
 
         verify(request).itens();
-        verify(pedidoGateway, times(2)).salvar(any(Pedido.class));
+        verify(pedidoGateway).salvar(any(Pedido.class));
         verify(produtoGateway).buscarPorId(anyLong());
         verify(usuarioGateway).buscarPorCpf(cpf);
     }

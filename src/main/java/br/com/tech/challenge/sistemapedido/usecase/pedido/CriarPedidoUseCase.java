@@ -41,7 +41,6 @@ public class CriarPedidoUseCase {
                 .itens(novosItens)
                 .build();
 
-        pedido = pedidoGateway.salvar(pedido);
         var itens = this.validarItens(itensPedido, pedido);
         pedido.adicionarItens(itens);
         pedido.calcularTotal();

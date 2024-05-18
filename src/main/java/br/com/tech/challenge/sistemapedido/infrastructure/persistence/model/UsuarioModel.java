@@ -32,10 +32,7 @@ public class UsuarioModel {
     private String email;
     private String senha;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<PedidoModel> pedidos;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "usuario_papeis",
             joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "papel_id", referencedColumnName = "id"))
