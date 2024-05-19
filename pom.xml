@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.tech.challenge</groupId>
-    <artifactId>SistemaPedido</artifactId>
+    <artifactId>sistema-pedido</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SistemaPedido</name>
     <description>SistemaPedido</description>
@@ -164,8 +164,8 @@
                             <tag>latest</tag>
                         </tags>
                         <auth>
-                            <username>thomasrabelo@hotmail.com</username>
-                            <password>Tybzy0-mysjij-pebkev</password>
+                            <username>${env.DOCKER_USERNAME}</username>
+                            <password>${env.DOCKER_PASSWORD}</password>
                         </auth>
                     </to>
                     <containerizingMode>packaged</containerizingMode>
