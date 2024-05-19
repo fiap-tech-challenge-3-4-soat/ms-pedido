@@ -16,7 +16,7 @@ public class GerarPagamentoPorQrCodeUseCase {
         this.pedidoGateway = pedidoGateway;
     }
 
-    public File executar(Long idPedido) {
+    public byte[] executar(Long idPedido) {
         var pedido = pedidoGateway.buscarPorId(idPedido)
                 .orElseThrow(() -> new PedidoNaoEncontradoException(idPedido));
 

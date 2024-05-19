@@ -10,24 +10,15 @@ spring:
     jpa:
         hibernate:
             ddl-auto: update
-    data:
-        redis:
-            repositories:
-                enabled: false
-            host: localhost
-            port: 6379
-
 app:
     jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
 app-jwt-expiration-milliseconds: 604800000
 
 rest:
     service:
-        mercadopago:
-            url: sdfssdf
-            user-id: dsfsdfsd
-            pos-id: ddsdfsdfs
-            notification-url: dfsdfsdfs
         ms-produto:
             url: http://localhost:8082
+            context: v1
+        ms-pagamento:
+            url: http://localhost:8081
             context: v1

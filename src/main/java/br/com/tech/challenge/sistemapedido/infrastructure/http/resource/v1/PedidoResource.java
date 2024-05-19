@@ -4,20 +4,13 @@ import br.com.tech.challenge.sistemapedido.application.controller.PedidoControll
 import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.application.response.CadastrarPedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.ListarPedidosResponse;
+import br.com.tech.challenge.sistemapedido.application.response.PedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.StatusPedidoResponse;
 import br.com.tech.challenge.sistemapedido.infrastructure.http.resource.v1.openapi.PedidoResourceOpenApi;
-import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.mercadopago.EventoConfirmacaoPagamento;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,6 +30,14 @@ public class PedidoResource implements PedidoResourceOpenApi {
     @GetMapping
     public ResponseEntity<ListarPedidosResponse> listar() {
         var resposta = controller.listar();
+
+        return ResponseEntity.ok(resposta);
+    }
+
+    @Override
+    @GetMapping("{idPedido}")
+    public ResponseEntity<PedidoResponse> obter(@PathVariable Long idPedido) {
+        var resposta = controller.consultar(idPedido);
 
         return ResponseEntity.ok(resposta);
     }

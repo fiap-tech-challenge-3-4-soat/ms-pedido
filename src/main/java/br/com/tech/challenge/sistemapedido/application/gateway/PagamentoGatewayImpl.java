@@ -6,6 +6,7 @@ import br.com.tech.challenge.sistemapedido.application.service.PagamentoService;
 import jakarta.inject.Named;
 
 import java.io.File;
+import java.io.IOException;
 
 @Named
 public class PagamentoGatewayImpl implements PagamentoGateway {
@@ -16,12 +17,7 @@ public class PagamentoGatewayImpl implements PagamentoGateway {
     }
 
     @Override
-    public File gerarPagamentoPorQrCode(Pedido pedido) {
+    public byte[] gerarPagamentoPorQrCode(Pedido pedido) {
         return pagamentoService.gerarQrCode(pedido);
-    }
-
-    @Override
-    public Long confirmarPagamento(Long idExterno) {
-        return pagamentoService.confirmarPagamento(idExterno);
     }
 }

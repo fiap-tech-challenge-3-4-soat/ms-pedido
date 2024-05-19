@@ -4,8 +4,8 @@ import br.com.tech.challenge.sistemapedido.application.dto.InputErrorDTO;
 import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.application.response.CadastrarPedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.ListarPedidosResponse;
+import br.com.tech.challenge.sistemapedido.application.response.PedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.StatusPedidoResponse;
-import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.mercadopago.EventoConfirmacaoPagamento;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -13,11 +13,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "Pedidos", description = "Gerencia os pedidos")
 public interface PedidoResourceOpenApi {
@@ -109,4 +107,20 @@ public interface PedidoResourceOpenApi {
             )
     })
     ResponseEntity<StatusPedidoResponse> verificarStatus(Long id);
+
+    @Operation(summary = "Consulta um pedido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404",
+                    description = "Pedido não encontrado",
+                    content = @Content(
+                            examples = {
+                                    @ExampleObject(
+                                            value="{\"mensagem\": \"Pedido não encontrado\"}"
+                                    )
+                            }
+                    )
+            )
+    })
+    public ResponseEntity<PedidoResponse> obter(@PathVariable Long idPedido);
 }

@@ -14,17 +14,4 @@ public class Data extends ValueObjectValidated {
     public LocalDateTime getData() {
         return data;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Data data1 = (Data) o;
-        return Objects.equals(data, data1.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(data);
-    }
 }

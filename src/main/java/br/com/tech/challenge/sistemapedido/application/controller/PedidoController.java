@@ -5,6 +5,7 @@ import br.com.tech.challenge.sistemapedido.application.mapper.PedidoDataMapper;
 import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.application.response.CadastrarPedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.ListarPedidosResponse;
+import br.com.tech.challenge.sistemapedido.application.response.PedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.StatusPedidoResponse;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.ProdutoGateway;
@@ -54,6 +55,13 @@ public class PedidoController {
         var pedido = buscarPedidoUseCase.executar(id);
 
         return new StatusPedidoResponse(pedido.estaPago());
+    }
+
+    public PedidoResponse consultar(Long id) {
+        var buscarPedidoUseCase = new BuscarPedidoUseCase(this.pedidoGateway);
+        var pedido = buscarPedidoUseCase.executar(id);
+
+        return new PedidoResponse(pedidoMapper.toDTO(pedido));
     }
 
     public void preparacao(Long idPedido) {

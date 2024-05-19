@@ -3,8 +3,8 @@ package br.com.tech.challenge.sistemapedido.application.service;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 
 import java.io.File;
+import java.io.IOException;
 
 public interface PagamentoService {
-    File gerarQrCode(Pedido pedido);
-    Long confirmarPagamento(Long idExterno);
+    byte[] gerarQrCode(Pedido pedido);
 }

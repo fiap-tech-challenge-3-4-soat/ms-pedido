@@ -51,6 +51,10 @@ public class Usuario {
         return papeis;
     }
 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public void setPapeis(Set<Papel> papeis) {
         this.papeis = papeis;
     }

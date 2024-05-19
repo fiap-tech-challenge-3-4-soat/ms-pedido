@@ -2,12 +2,9 @@ package br.com.tech.challenge.sistemapedido.application.controller;
 
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PagamentoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
-import br.com.tech.challenge.sistemapedido.usecase.pedido.ConfirmarPagamentoUseCase;
 import br.com.tech.challenge.sistemapedido.usecase.pedido.GerarPagamentoPorQrCodeUseCase;
 import br.com.tech.challenge.sistemapedido.usecase.pedido.PagarPedidoUseCase;
 import jakarta.inject.Named;
-
-import java.io.File;
 
 @Named
 public class PagamentoController {
@@ -19,13 +16,7 @@ public class PagamentoController {
         this.pagamentoGateway = pagamentoGateway;
     }
 
-    public void receberConfirmacaoPagamento(Long idExterno) {
-        var confirmarPagamentoUseCase = new ConfirmarPagamentoUseCase(this.pagamentoGateway, this.pedidoGateway);
-
-        confirmarPagamentoUseCase.executar(idExterno);
-    }
-
-    public File gerarPagamentoPorQrCode(Long idPedido) {
+    public byte[] gerarPagamentoPorQrCode(Long idPedido) {
         var gerarPagamentoPorQrCodeUseCase = new GerarPagamentoPorQrCodeUseCase(this.pagamentoGateway, this.pedidoGateway);
 
         return gerarPagamentoPorQrCodeUseCase.executar(idPedido);
