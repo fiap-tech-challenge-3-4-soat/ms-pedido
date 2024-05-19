@@ -35,7 +35,7 @@ public class PedidoListener {
 
     @EventListener
     public void adicionarNaFilaCliente(AlteracaoStatusPedidoEvent event) {
-        var statusFila = new LinkedList<>(Arrays.asList(StatusPedido.EM_PREPARACAO));
+        var statusFila = new LinkedList<>(Arrays.asList(StatusPedido.EM_PREPARACAO, StatusPedido.PRONTO));
 
         if (statusFila.contains(event.pedido().getStatus())) {
             var fila = FilaClienteModel.builder()

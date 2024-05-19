@@ -18,10 +18,6 @@ spring:
             continue-on-error: true
             encoding: UTF-8
             mode: always
-    data:
-      redis:
-          host: localhost
-          port: 6379
     cloud:
       openfeign:
         client:

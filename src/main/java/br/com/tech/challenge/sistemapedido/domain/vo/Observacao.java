@@ -13,21 +13,7 @@ public class Observacao extends ValueObjectValidated {
         this.validar();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Observacao that = (Observacao) o;
-        return Objects.equals(observacao, that.observacao);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(observacao);
-    }
-
-    @Override
-    public String toString() {
+    public @Size(max = 200) String getObservacao() {
         return observacao;
     }
 }

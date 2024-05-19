@@ -16,17 +16,4 @@ public class Quantidade extends ValueObjectValidated {
     public Integer getQuantidade() {
         return quantidade;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Quantidade that = (Quantidade) o;
-        return Objects.equals(quantidade, that.quantidade);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(quantidade);
-    }
 }

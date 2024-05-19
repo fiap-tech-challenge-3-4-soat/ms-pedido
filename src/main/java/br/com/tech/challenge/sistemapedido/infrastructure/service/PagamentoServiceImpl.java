@@ -25,7 +25,7 @@ public class PagamentoServiceImpl implements PagamentoService {
         var qrCodeImage = response.getBody();
 
         if (Objects.isNull(qrCodeImage)) {
-            throw new SistemaPedidosAPIException(HttpStatus.UNPROCESSABLE_ENTITY, "Não foi possível obter o QR-Code");
+            throw new InternalErrorException("Não foi possível obter o QR-Code");
         }
 
         return qrCodeImage;

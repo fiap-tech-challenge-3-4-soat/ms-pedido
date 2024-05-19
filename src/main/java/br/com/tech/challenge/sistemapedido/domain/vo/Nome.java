@@ -13,22 +13,7 @@ public class Nome extends ValueObjectValidated {
         this.validar();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Nome nome1 = (Nome) o;
-        return Objects.equals(nome, nome1.nome);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome);
-    }
-
-    @Override
-    public String toString() {
+    public @NotBlank String getNome() {
         return nome;
     }
-
 }

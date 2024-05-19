@@ -3,11 +3,11 @@ package br.com.tech.challenge.sistemapedido.infrastructure.http.resource.v1;
 import br.com.tech.challenge.sistemapedido.TestObjects;
 import br.com.tech.challenge.sistemapedido.application.dto.ItemProdutoDTO;
 import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
-import br.com.tech.challenge.sistemapedido.application.service.ProdutoService;
+import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
-import br.com.tech.challenge.sistemapedido.infrastructure.mapper.PapelModelMapper;
-import br.com.tech.challenge.sistemapedido.infrastructure.persistence.model.PapelModel;
+import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.ConsultarProdutoResponse;
+import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.MSProdutoHttpClient;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.*;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
@@ -20,9 +20,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -69,7 +71,7 @@ class PedidoResourceIT {
     private MockMvc mockMvc;
 
     @MockBean
-    private ProdutoService produtoService;
+    private MSProdutoHttpClient msProdutoHttpClient;
 
     @BeforeEach
     void setUp() {
@@ -96,9 +98,10 @@ class PedidoResourceIT {
         var produtoDTO = TestObjects.getProdutoDTO();
         var request = new PedidoRequest(List.of(itemProdutoDTO), null);
         var jsonRequest = jsonMapper.writeValueAsString(request);
+        var consultaProdutoResponse = new ConsultarProdutoResponse(produtoDTO);
 
-        when(produtoService.buscarProdutoPorId(anyLong()))
-                .thenReturn(produtoDTO);
+        when(msProdutoHttpClient.obterProduto(anyLong()))
+                .thenReturn(ResponseEntity.of(Optional.of(consultaProdutoResponse)));
 
         mockMvc.perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,6 +109,24 @@ class PedidoResourceIT {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idPedido").isNumber());
+    }
+
+    @Test
+    void deveriaFalharAoNaoConseguirObterDadosDoPedido() throws Exception {
+        var itemProdutoDTO = new ItemProdutoDTO(1L, 1, "Observação Teste");
+        var produtoDTO = TestObjects.getProdutoDTO();
+        var request = new PedidoRequest(List.of(itemProdutoDTO), null);
+        var jsonRequest = jsonMapper.writeValueAsString(request);
+
+        when(msProdutoHttpClient.obterProduto(anyLong()))
+                .thenReturn(ResponseEntity.of(Optional.empty()));
+
+        mockMvc.perform(post(PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest)
+                )
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.mensagem").value(String.format("Não foi possível obter o produto com o ID: %d", produtoDTO.id())));
     }
 
     @Test
@@ -264,17 +285,6 @@ class PedidoResourceIT {
                 .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
     }
 
-    private Usuario obterUsuario() {
-        var papelModel = PapelModel.builder().nome("Teste").build();
-        papelModel = papelRepositoryJpa.save(papelModel);
-        var papel = new PapelModelMapper().toDomain(papelModel);
-
-        var usuario = TestObjects.getUsuario();
-        usuario.setPapeis(Set.of(papel));
-
-        return usuarioGateway.salvar(usuario);
-    }
-
     @Test
     void deveriaConsultarUmPedidoComSucesso() throws Exception {
         mockMvc.perform(get(PATH + "/{idPedido}", this.pedido.getId())
@@ -293,5 +303,12 @@ class PedidoResourceIT {
                 )
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
+    }
+
+    private Usuario obterUsuario() {
+        var usuario = TestObjects.getUsuario();
+        usuario.setPapeis(Set.of(new Papel("Teste")));
+
+        return usuarioGateway.salvar(usuario);
     }
 }
