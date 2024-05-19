@@ -37,7 +37,7 @@ class GerarPagamentoPorQrCodeUseCaseTest {
         when(pedidoGateway.buscarPorId(anyLong()))
                 .thenReturn(Optional.of(pedido));
         when(pagamentoGateway.gerarPagamentoPorQrCode(any(Pedido.class)))
-                .thenReturn(any(File.class));
+                .thenReturn(new byte[1]);
 
         underTest.executar(idPedido);
 
