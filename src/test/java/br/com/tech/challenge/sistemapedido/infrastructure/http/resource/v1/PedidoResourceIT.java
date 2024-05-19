@@ -91,7 +91,7 @@ class PedidoResourceIT {
     }
 
     @Test
-    void deveriaCriarUmProdutoComSucesso() throws Exception {
+    void deveriaCriarUmPedidoComSucesso() throws Exception {
         var itemProdutoDTO = new ItemProdutoDTO(1L, 1, "Observação Teste");
         var produtoDTO = TestObjects.getProdutoDTO();
         var request = new PedidoRequest(List.of(itemProdutoDTO), null);
@@ -109,7 +109,7 @@ class PedidoResourceIT {
     }
 
     @Test
-    void deveriaListarProdutosComSucesso() throws Exception {
+    void deveriaListarPedidosComSucesso() throws Exception {
         mockMvc.perform(get(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -273,5 +273,25 @@ class PedidoResourceIT {
         usuario.setPapeis(Set.of(papel));
 
         return usuarioGateway.salvar(usuario);
+    }
+
+    @Test
+    void deveriaConsultarUmPedidoComSucesso() throws Exception {
+        mockMvc.perform(get(PATH + "/{idPedido}", this.pedido.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pedido.id").value(this.pedido.getId()))
+                .andExpect(jsonPath("$.pedido.status").value(this.pedido.getStatus().name()));
+    }
+
+    @Test
+    void deveriaFalharQuandoConsultarUmPedidoInvalido() throws Exception {
+        var idPedido = 99999;
+        mockMvc.perform(get(PATH + "/{idPedido}", idPedido)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
     }
 }

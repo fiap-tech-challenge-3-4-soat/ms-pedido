@@ -185,4 +185,21 @@ class PedidoControllerTest {
 
         verify(pedidoGateway).buscarPorId(idPedido);
     }
+
+    @Test
+    void deveriaConsultarPedidoComSucesso() {
+        var idPedido = 1L;
+
+        when(pedidoGateway.buscarPorId(idPedido))
+                .thenReturn(Optional.of(this.pedido));
+        when(pedidoMapper.toDTO(any(Pedido.class)))
+                .thenReturn(pedidoDTO);
+
+        var response = underTest.consultar(idPedido);
+
+        assertThat(response.getPedido().id()).isEqualTo(this.pedidoDTO.id());
+
+        verify(pedidoGateway).buscarPorId(idPedido);
+        verify(pedidoMapper).toDTO(any(Pedido.class));
+    }
 }

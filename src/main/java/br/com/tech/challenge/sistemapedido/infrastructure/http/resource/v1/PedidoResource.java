@@ -4,6 +4,7 @@ import br.com.tech.challenge.sistemapedido.application.controller.PedidoControll
 import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.application.response.CadastrarPedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.ListarPedidosResponse;
+import br.com.tech.challenge.sistemapedido.application.response.PedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.StatusPedidoResponse;
 import br.com.tech.challenge.sistemapedido.infrastructure.http.resource.v1.openapi.PedidoResourceOpenApi;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.mercadopago.EventoConfirmacaoPagamento;
@@ -37,6 +38,14 @@ public class PedidoResource implements PedidoResourceOpenApi {
     @GetMapping
     public ResponseEntity<ListarPedidosResponse> listar() {
         var resposta = controller.listar();
+
+        return ResponseEntity.ok(resposta);
+    }
+
+    @Override
+    @GetMapping("{idPedido}")
+    public ResponseEntity<PedidoResponse> obter(@PathVariable Long idPedido) {
+        var resposta = controller.consultar(idPedido);
 
         return ResponseEntity.ok(resposta);
     }
