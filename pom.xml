@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.tech.challenge</groupId>
-    <artifactId>sistema-pedido</artifactId>
+    <artifactId>ms-pedido</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SistemaPedido</name>
     <description>SistemaPedido</description>
@@ -20,7 +20,6 @@
         <archunit-junit5.version>1.1.0</archunit-junit5.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
         <!-- Define the Jib version -->
-        <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <jacoco.version>0.8.8</jacoco.version>
         <sonar.organization>fiap-tech-challenge-3-4-soat</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -137,61 +136,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${jib-maven-plugin.version}</version>
-                <configuration>
-                    <skip>${skipBuildDocker}</skip>
-                    <from>
-                        <image>openjdk:17-oracle</image>
-                        <platforms>
-                            <platform>
-                                <architecture>amd64</architecture>
-                                <os>linux</os>
-                            </platform>
-                            <platform>
-                                <architecture>arm64</architecture>
-                                <os>linux</os>
-                            </platform>
-                        </platforms>
-                    </from>
-                    <to>
-                        <image>docker.io/thomarabelo/fiap-tech_challenge</image>
-                        <tags>
-                            <tag>${project.version}</tag>
-                            <tag>latest</tag>
-                        </tags>
-                        <auth>
-                            <username>${env.DOCKER_USERNAME}</username>
-                            <password>${env.DOCKER_PASSWORD}</password>
-                        </auth>
-                    </to>
-                    <containerizingMode>packaged</containerizingMode>
-                    <container>
-                        <jvmFlags>
-                            <jvmFlag>-Xms512m</jvmFlag>
-                            <jvmFlag>-Xdebug</jvmFlag>
-                        </jvmFlags>
-                        <ports>
-                            <port>8080</port>
-                        </ports>
-                        <format>Docker</format>
-                    </container>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>package</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
