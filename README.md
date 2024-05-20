@@ -120,3 +120,7 @@ http://localhost:8080/swagger-ui/index.html
 
 ## Demonstração
 - [Vídeo](https://youtu.be/W8E1y0WxSts)
+- 
+## Relatório de Testes
+
+<img src="URL_da_Imagem" alt="Relatório de Testes">
