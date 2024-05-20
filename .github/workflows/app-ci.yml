@@ -17,6 +17,7 @@ jobs:
         run: mvn verify -DskipIntegrationTests -DskipBuildDocker
   
   testes-integrados:
+    needs: testes-unitarios
     runs-on: ubuntu-latest
     services:
       mssql:
