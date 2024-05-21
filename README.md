@@ -123,4 +123,4 @@ http://localhost:8080/swagger-ui/index.html
 - 
 ## Relatório de Testes
 
-<img src="URL_da_Imagem" alt="Relatório de Testes">
+<img src="assets/relatório_testes.png" alt="Relatório de Testes">
