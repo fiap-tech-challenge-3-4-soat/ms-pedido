@@ -3,13 +3,12 @@ package br.com.tech.challenge.sistemapedido.usecase.pedido;
 import br.com.tech.challenge.sistemapedido.domain.ItemPedido;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.StatusPedido;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.domain.vo.Data;
 import br.com.tech.challenge.sistemapedido.domain.vo.Preco;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.ProdutoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.usuario.ObterUsuarioUseCase;
-import jakarta.inject.Named;
-import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,19 +16,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-@Named
 public class CriarPedidoUseCase {
     private final ObterUsuarioUseCase obterUsuarioUseCase;
     private final PedidoGateway pedidoGateway;
     private final ProdutoGateway produtoGateway;
+    private final PedidoQueue pedidoQueue;
 
-    public CriarPedidoUseCase(ObterUsuarioUseCase obterUsuarioUseCase, PedidoGateway pedidoGateway, ProdutoGateway produtoGateway) {
+    public CriarPedidoUseCase(ObterUsuarioUseCase obterUsuarioUseCase,
+                              PedidoGateway pedidoGateway,
+                              ProdutoGateway produtoGateway,
+                              PedidoQueue pedidoQueue) {
         this.obterUsuarioUseCase = obterUsuarioUseCase;
         this.pedidoGateway = pedidoGateway;
         this.produtoGateway = produtoGateway;
+        this.pedidoQueue = pedidoQueue;
     }
 
-    @Transactional
     public Pedido executar(List<ItemPedido> itensPedido, String cpf) {
         var novosItens = new LinkedList<ItemPedido>();
         var pedido = Pedido.builder()
@@ -50,7 +52,11 @@ public class CriarPedidoUseCase {
             pedido.adicionarUsuario(usuario);
         }
 
-        return pedidoGateway.salvar(pedido);
+        var pedidoSalvo = pedidoGateway.salvar(pedido);
+
+        pedidoQueue.publicar(pedidoSalvo);
+
+        return pedidoSalvo;
     }
 
     private List<ItemPedido> validarItens(List<ItemPedido> itens, Pedido pedido) {

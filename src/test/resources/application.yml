@@ -22,3 +22,9 @@ rest:
         ms-pagamento:
             url: http://localhost:8081
             context: v1
+            
+queue:
+    fila:
+        pedidos_criados: pedidos_criados
+        pagamentos_confirmados: pagamentos_confirmados
+    exchange: pagamentosex

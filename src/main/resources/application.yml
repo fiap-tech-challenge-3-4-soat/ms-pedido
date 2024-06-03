@@ -26,6 +26,11 @@ spring:
                     default-request-headers:
                         Authorization:
                             - Bearer TEST-6416668675808261-012515-7dac31f086dd3bdf5d7137ace77d0ad1-1654958216
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: admin
+        password: admin
 
 app:
     jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
@@ -44,7 +49,9 @@ rest:
         ms-pagamento:
             url: http://localhost:8081
             context: v1
-            
-cache:
-    config:
-        ttl: 60
+
+queue:
+    fila:
+        pedidos_criados: pedidos_criados
+        pagamentos_confirmados: pagamentos_confirmados
+    exchange: pagamentosex

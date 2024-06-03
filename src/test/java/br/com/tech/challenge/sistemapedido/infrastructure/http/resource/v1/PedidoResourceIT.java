@@ -6,6 +6,7 @@ import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.ConsultarProdutoResponse;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.MSProdutoHttpClient;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.*;
@@ -27,7 +28,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -73,6 +76,9 @@ class PedidoResourceIT {
     @MockBean
     private MSProdutoHttpClient msProdutoHttpClient;
 
+    @MockBean
+    private PedidoQueue pedidoQueue;
+
     @BeforeEach
     void setUp() {
         var usuario = obterUsuario();
@@ -102,6 +108,7 @@ class PedidoResourceIT {
 
         when(msProdutoHttpClient.obterProduto(anyLong()))
                 .thenReturn(ResponseEntity.of(Optional.of(consultaProdutoResponse)));
+        doNothing().when(pedidoQueue).publicar(any(Pedido.class));
 
         mockMvc.perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)

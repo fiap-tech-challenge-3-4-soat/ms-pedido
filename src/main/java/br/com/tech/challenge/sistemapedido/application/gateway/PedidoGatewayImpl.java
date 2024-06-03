@@ -9,11 +9,13 @@ import br.com.tech.challenge.sistemapedido.domain.event.AlteracaoStatusPedidoEve
 import br.com.tech.challenge.sistemapedido.domain.event.PedidoPagoEvent;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Named
+@Service
 public class PedidoGatewayImpl implements PedidoGateway {
     private final PedidoRepository pedidoRepository;
     private final FilaRepository filaRepository;
@@ -42,6 +44,7 @@ public class PedidoGatewayImpl implements PedidoGateway {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public Pedido salvar(Pedido pedido) {
         return pedidoRepository.save(pedido);
     }

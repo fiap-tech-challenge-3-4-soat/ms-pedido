@@ -7,36 +7,42 @@ import br.com.tech.challenge.sistemapedido.application.response.CadastrarPedidoR
 import br.com.tech.challenge.sistemapedido.application.response.ListarPedidosResponse;
 import br.com.tech.challenge.sistemapedido.application.response.PedidoResponse;
 import br.com.tech.challenge.sistemapedido.application.response.StatusPedidoResponse;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.ProdutoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
 import br.com.tech.challenge.sistemapedido.usecase.pedido.*;
 import br.com.tech.challenge.sistemapedido.usecase.usuario.ObterUsuarioUseCase;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 
 @Named
 public class PedidoController {
     private final PedidoGateway pedidoGateway;
     private final ProdutoGateway produtoGateway;
     private final UsuarioGateway usuarioGateway;
+    private final PedidoQueue pedidoQueue;
     private final PedidoDataMapper pedidoMapper;
     private final ItemPedidoDataMapper itemPedidoMapper;
 
     public PedidoController(PedidoGateway pedidoGateway,
                             ProdutoGateway produtoGateway,
                             UsuarioGateway usuarioGateway,
+                            PedidoQueue pedidoQueue,
                             PedidoDataMapper pedidoMapper,
                             ItemPedidoDataMapper itemPedidoMapper) {
         this.pedidoGateway = pedidoGateway;
         this.produtoGateway = produtoGateway;
         this.usuarioGateway = usuarioGateway;
+        this.pedidoQueue = pedidoQueue;
         this.pedidoMapper = pedidoMapper;
         this.itemPedidoMapper = itemPedidoMapper;
     }
 
+    @Transactional
     public CadastrarPedidoResponse criar(PedidoRequest request) {
         var obterUsuarioUseCase = new ObterUsuarioUseCase(this.usuarioGateway);
-        var criarPedidoUseCase = new CriarPedidoUseCase(obterUsuarioUseCase, this.pedidoGateway, this.produtoGateway);
+        var criarPedidoUseCase = new CriarPedidoUseCase(obterUsuarioUseCase, this.pedidoGateway, this.produtoGateway, pedidoQueue);
 
         var pedido = criarPedidoUseCase.executar(itemPedidoMapper.toDomainList(request.itens()), request.cpf());
 

@@ -28,7 +28,7 @@ public class PedidoModel {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private UsuarioModel usuario;
-    @OneToMany(mappedBy = "pedido")
     @Setter
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ItemPedidoModel> itens;
 }

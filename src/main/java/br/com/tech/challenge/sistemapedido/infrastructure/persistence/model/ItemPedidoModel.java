@@ -27,8 +27,8 @@ public class ItemPedidoModel {
     private BigDecimal preco;
     private Integer quantidade;
     private String observacao;
-    @ManyToOne
     @Setter
-    @JoinColumn(name = "id_pedido", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
     private PedidoModel pedido;
 }
