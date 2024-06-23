@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PedidoQueueImpl implements PedidoQueue {
-    @Value("${queue.fila.pedidos_criados}")
+    @Value("${queue.filas.pedidos_criados}")
     private String pedidosCriados;
 
-    @Value("${queue.exchange}")
+    @Value("${queue.exchange.fanoutPedido}")
     private String queueExchange;
 
     private final RabbitTemplate rabbitTemplate;
@@ -26,7 +26,7 @@ public class PedidoQueueImpl implements PedidoQueue {
     private final ObjectMapper jsonMapper;
 
     @Override
-    public void publicar(Pedido pedido) {
+    public void publicarPedidoCriado(Pedido pedido) {
         try {
             var pedidoJson = jsonMapper.writeValueAsString(pedidoDataMapper.toDTO(pedido));
             rabbitTemplate.convertAndSend(queueExchange, "", pedidoJson);

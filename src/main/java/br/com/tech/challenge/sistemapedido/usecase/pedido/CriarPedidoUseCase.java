@@ -54,7 +54,7 @@ public class CriarPedidoUseCase {
 
         var pedidoSalvo = pedidoGateway.salvar(pedido);
 
-        pedidoQueue.publicar(pedidoSalvo);
+        pedidoQueue.publicarPedidoCriado(pedidoSalvo);
 
         return pedidoSalvo;
     }

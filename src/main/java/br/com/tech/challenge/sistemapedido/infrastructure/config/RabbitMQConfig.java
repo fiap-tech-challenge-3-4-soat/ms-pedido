@@ -12,11 +12,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    @Value("${queue.fila.pedidos_criados}")
+    @Value("${queue.filas.pedidos_criados}")
     private String pedidosCriados;
 
-    @Value("${queue.exchange}")
-    private String queueExchange;
+    @Value("${queue.filas.pagamentos_nao_gerados}")
+    private String pagamentosNaoGerados;
+
+    @Value("${queue.exchange.fanoutPedido}")
+    private String queuePedidoExchange;
+
+    @Value("${queue.exchange.deadLetterPedido}")
+    private String queueDeadLetterExchange;
 
     @Bean
     public RabbitAdmin createRabbitAdmin(ConnectionFactory connectionFactory) {
@@ -34,23 +40,46 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue filaPedidosCriados() {
+    public Queue queuePedidosCriados() {
         return QueueBuilder
                 .nonDurable(pedidosCriados)
+                .deadLetterExchange(queueDeadLetterExchange)
                 .build();
     }
 
     @Bean
-    public FanoutExchange fanoutExchange() {
+    public FanoutExchange fanoutPedidosExchange() {
         return ExchangeBuilder
-                .fanoutExchange(queueExchange)
+                .fanoutExchange(queuePedidoExchange)
                 .build();
     }
 
     @Bean
     public Binding bindPedidoExchange() {
         return BindingBuilder
-                .bind(filaPedidosCriados())
-                .to(fanoutExchange());
+                .bind(queuePedidosCriados())
+                .to(fanoutPedidosExchange());
+    }
+
+    //DLQ
+    @Bean
+    public Queue queuePagamentosNaoGerados() {
+        return QueueBuilder
+                .nonDurable(pagamentosNaoGerados)
+                .build();
+    }
+
+    @Bean
+    public FanoutExchange deadLetterExchange() {
+        return ExchangeBuilder
+                .fanoutExchange(queueDeadLetterExchange)
+                .build();
+    }
+
+    @Bean
+    public Binding bindPagamentoDlqExchange() {
+        return BindingBuilder
+                .bind(queuePagamentosNaoGerados())
+                .to(deadLetterExchange());
     }
 }

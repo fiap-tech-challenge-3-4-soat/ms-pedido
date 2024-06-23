@@ -108,7 +108,7 @@ class PedidoResourceIT {
 
         when(msProdutoHttpClient.obterProduto(anyLong()))
                 .thenReturn(ResponseEntity.of(Optional.of(consultaProdutoResponse)));
-        doNothing().when(pedidoQueue).publicar(any(Pedido.class));
+        doNothing().when(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
 
         mockMvc.perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)

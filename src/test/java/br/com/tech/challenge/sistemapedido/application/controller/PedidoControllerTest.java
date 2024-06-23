@@ -78,7 +78,7 @@ class PedidoControllerTest {
                 .thenReturn(this.pedido);
         when(produtoGateway.buscarPorId(anyLong()))
                 .thenReturn(this.produto);
-        doNothing().when(pedidoQueue).publicar(any(Pedido.class));
+        doNothing().when(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
 
         var response = underTest.criar(request);
 
@@ -88,7 +88,7 @@ class PedidoControllerTest {
         verify(pedidoGateway).salvar(any(Pedido.class));
         verify(produtoGateway).buscarPorId(anyLong());
         verify(usuarioGateway, never()).buscarPorCpf(anyString());
-        verify(pedidoQueue).publicar(any(Pedido.class));
+        verify(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ class PedidoControllerTest {
                 .thenReturn(this.produto);
         when(usuarioGateway.buscarPorCpf(cpf))
                 .thenReturn(Optional.of(usuario));
-        doNothing().when(pedidoQueue).publicar(any(Pedido.class));
+        doNothing().when(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
 
         var response = underTest.criar(request);
 
@@ -114,7 +114,7 @@ class PedidoControllerTest {
         verify(pedidoGateway).salvar(any(Pedido.class));
         verify(produtoGateway).buscarPorId(anyLong());
         verify(usuarioGateway).buscarPorCpf(cpf);
-        verify(pedidoQueue).publicar(any(Pedido.class));
+        verify(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
     }
 
     @Test
