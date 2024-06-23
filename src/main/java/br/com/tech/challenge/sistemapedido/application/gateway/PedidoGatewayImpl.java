@@ -8,7 +8,6 @@ import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.event.AlteracaoStatusPedidoEvent;
 import br.com.tech.challenge.sistemapedido.domain.event.PedidoPagoEvent;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
-import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
