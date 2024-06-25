@@ -25,7 +25,10 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(new InputErrorDTO(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({PedidoJaPagoException.class, PedidoNaoPagoException.class, PedidoStatusIncorretoException.class})
+    @ExceptionHandler({PedidoJaPagoException.class,
+            PedidoNaoPagoException.class,
+            PedidoStatusIncorretoException.class,
+            PedidoCanceladoException.class})
     public ResponseEntity<InputErrorDTO> pedidoJaPago(RuntimeException exception) {
         return new ResponseEntity<>(new InputErrorDTO(exception.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }

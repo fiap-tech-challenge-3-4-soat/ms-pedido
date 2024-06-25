@@ -60,7 +60,7 @@ public class PedidoController {
         var buscarPedidoUseCase = new BuscarPedidoUseCase(this.pedidoGateway);
         var pedido = buscarPedidoUseCase.executar(id);
 
-        return new StatusPedidoResponse(pedido.estaPago());
+        return new StatusPedidoResponse(pedido.estaPago(), pedido.getStatus());
     }
 
     public PedidoResponse consultar(Long id) {

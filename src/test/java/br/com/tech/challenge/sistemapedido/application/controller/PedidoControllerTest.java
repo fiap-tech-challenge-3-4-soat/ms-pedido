@@ -142,7 +142,7 @@ class PedidoControllerTest {
 
         var response = underTest.verificarStatus(idPedido);
 
-        assertThat(response.isPagamentoAprovado()).isTrue();
+        assertThat(response.getPagamentoAprovado()).isTrue();
 
         verify(pedidoGateway).buscarPorId(idPedido);
     }
