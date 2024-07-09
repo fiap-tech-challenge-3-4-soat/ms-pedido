@@ -5,7 +5,6 @@ import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoPagoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoStatusIncorretoException;
-import br.com.tech.challenge.sistemapedido.domain.exception.UsuarioNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

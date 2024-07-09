@@ -1,6 +1,5 @@
 package br.com.tech.challenge.sistemapedido.usecase.gateway;
 
-import br.com.tech.challenge.sistemapedido.domain.ItemPedido;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 
 import java.util.List;

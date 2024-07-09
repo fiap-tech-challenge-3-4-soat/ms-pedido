@@ -1,7 +1,6 @@
 package br.com.tech.challenge.sistemapedido.infrastructure.persistence.model;
 
 import br.com.tech.challenge.sistemapedido.domain.StatusPedido;
-import br.com.tech.challenge.sistemapedido.domain.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 

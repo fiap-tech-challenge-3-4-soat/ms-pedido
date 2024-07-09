@@ -5,20 +5,19 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class Preco extends ValueObjectValidated {
     @NotNull
     @Digits(integer=3, fraction=2)
     @DecimalMin(value = "0", inclusive = false)
-    private final BigDecimal preco;
+    private final BigDecimal valor;
 
     public Preco(BigDecimal preco) {
-        this.preco = preco;
+        this.valor = preco;
         this.validar();
     }
 
     public BigDecimal getPreco() {
-        return preco;
+        return valor;
     }
 }

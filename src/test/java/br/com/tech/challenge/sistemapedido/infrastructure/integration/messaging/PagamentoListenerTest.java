@@ -6,7 +6,6 @@ import br.com.tech.challenge.sistemapedido.application.repository.PedidoReposito
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.event.PedidoPagoEvent;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
-import br.com.tech.challenge.sistemapedido.domain.exception.UsuarioNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.transfer.PagamentoConfirmadoTO;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.transfer.StatusPagamentoTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,12 +16,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

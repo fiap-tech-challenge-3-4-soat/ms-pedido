@@ -1,9 +1,6 @@
 package br.com.tech.challenge.sistemapedido.infrastructure.http.resource.v1;
 
 import br.com.tech.challenge.sistemapedido.TestObjects;
-import br.com.tech.challenge.sistemapedido.application.dto.ItemProdutoDTO;
-import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
-import br.com.tech.challenge.sistemapedido.application.service.PagamentoService;
 import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
@@ -12,7 +9,6 @@ import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.mspag
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.*;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

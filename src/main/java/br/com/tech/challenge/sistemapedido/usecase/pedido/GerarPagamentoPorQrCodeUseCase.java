@@ -7,8 +7,6 @@ import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoE
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PagamentoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 
-import java.io.File;
-
 public class GerarPagamentoPorQrCodeUseCase {
     private final PagamentoGateway pagamentoGateway;
     private final PedidoGateway pedidoGateway;

@@ -3,7 +3,6 @@ package br.com.tech.challenge.sistemapedido.application.mapper;
 import br.com.tech.challenge.sistemapedido.application.dto.ItemPedidoDTO;
 import br.com.tech.challenge.sistemapedido.application.dto.ItemProdutoDTO;
 import br.com.tech.challenge.sistemapedido.domain.ItemPedido;
-import br.com.tech.challenge.sistemapedido.domain.Produto;
 import br.com.tech.challenge.sistemapedido.domain.vo.Observacao;
 import br.com.tech.challenge.sistemapedido.domain.vo.Quantidade;
 import jakarta.inject.Named;

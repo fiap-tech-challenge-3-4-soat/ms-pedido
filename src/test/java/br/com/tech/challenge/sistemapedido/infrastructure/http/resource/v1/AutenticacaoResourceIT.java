@@ -6,15 +6,11 @@ import br.com.tech.challenge.sistemapedido.application.request.RegistrarUsuarioR
 import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
 import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
-import br.com.tech.challenge.sistemapedido.infrastructure.mapper.PapelModelMapper;
-import br.com.tech.challenge.sistemapedido.infrastructure.persistence.model.PapelModel;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.PapelRepositoryJpa;
-import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.PedidoRepositoryJpa;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.UsuarioRepositoryJpa;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,8 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,12 +59,13 @@ class AutenticacaoResourceIT {
     @AfterEach
     void tearDown() {
         usuarioRepositoryJpa.deleteAll();
+        papelRepositoryJpa.deleteAll();
     }
 
     @Test
     void deveriaAutenticarUmUsuarioComSucesso() throws Exception {
-        var usuario = obterUsuario();
-        var request = new AutenticarUsuarioRequest(usuario.getCpf(), SENHA);
+        var user = obterUsuario();
+        var request = new AutenticarUsuarioRequest(user.getCpf(), SENHA);
         var jsonRequest = jsonMapper.writeValueAsString(request);
 
         mockMvc.perform(post(PATH + "/autenticar")
@@ -111,13 +106,11 @@ class AutenticacaoResourceIT {
     }
 
     private Usuario obterUsuario() {
+        var user = TestObjects.getUsuario();
+        user.setPapeis(Set.of(new Papel("Teste")));
 
+        user.setSenha(passwordEncoder.encode(SENHA));
 
-        var usuario = TestObjects.getUsuario();
-        usuario.setPapeis(Set.of(new Papel("Teste")));
-
-        usuario.setSenha(passwordEncoder.encode(SENHA));
-
-        return usuarioGateway.salvar(usuario);
+        return usuarioGateway.salvar(user);
     }
 }

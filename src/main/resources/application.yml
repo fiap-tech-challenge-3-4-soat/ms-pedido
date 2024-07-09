@@ -1,18 +1,14 @@
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
-        password: sistema_pedidos
         url: jdbc:mysql://localhost:33080/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true
         username: sistema_pedidos
+        password: ${DB_PASSWORD}
     jpa:
         database-platform: org.hibernate.dialect.MySQL8Dialect
         defer-datasource-initialization: true
         hibernate:
             ddl-auto: update
-        properties:
-            hibernate:
-                format_sql: true
-                show_sql: true
     sql:
         init:
             continue-on-error: true
@@ -30,7 +26,7 @@ spring:
         host: localhost
         port: 5672
         username: admin
-        password: admin
+        password: ${QUEUE_PASSWORD}
 
 app:
     jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb

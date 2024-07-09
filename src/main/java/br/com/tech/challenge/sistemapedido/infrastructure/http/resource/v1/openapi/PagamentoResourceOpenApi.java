@@ -10,8 +10,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.io.IOException;
-
 @Tag(name = "Pagamentos", description = "Gerencia os pagamentos dos pedidos")
 public interface PagamentoResourceOpenApi {
 
