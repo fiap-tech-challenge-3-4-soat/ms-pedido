@@ -5,6 +5,7 @@ import br.com.tech.challenge.sistemapedido.application.request.AutenticarUsuario
 import br.com.tech.challenge.sistemapedido.application.request.RegistrarUsuarioRequest;
 import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.infrastructure.mapper.PapelModelMapper;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.model.PapelModel;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.PapelRepositoryJpa;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,6 +55,9 @@ class AutenticacaoResourceIT {
 
     @Autowired
     private ObjectMapper jsonMapper;
+
+    @MockBean
+    private PedidoQueue pedidoQueue;
 
     @Autowired
     private MockMvc mockMvc;

@@ -7,6 +7,7 @@ import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.StatusPedido;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.ConsultarProdutoResponse;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.MSProdutoHttpClient;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.*;
@@ -68,13 +69,10 @@ class FilaResourceIT {
     private UsuarioRepositoryJpa usuarioRepositoryJpa;
 
     @Autowired
-    private ObjectMapper jsonMapper;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private MSProdutoHttpClient msProdutoHttpClient;
+    private PedidoQueue pedidoQueue;
 
     @BeforeEach
     void setUp() {

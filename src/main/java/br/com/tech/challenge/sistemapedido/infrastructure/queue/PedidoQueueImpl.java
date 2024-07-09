@@ -15,15 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PedidoQueueImpl implements PedidoQueue {
+    private final RabbitTemplate rabbitTemplate;
+    private final PedidoDataMapper pedidoDataMapper;
+    private final ObjectMapper jsonMapper;
+
     @Value("${queue.filas.pedidos_criados}")
     private String pedidosCriados;
 
     @Value("${queue.exchange.fanoutPedido}")
     private String queueExchange;
-
-    private final RabbitTemplate rabbitTemplate;
-    private final PedidoDataMapper pedidoDataMapper;
-    private final ObjectMapper jsonMapper;
 
     @Override
     public void publicarPedidoCriado(Pedido pedido) {

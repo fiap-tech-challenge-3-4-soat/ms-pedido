@@ -1,10 +1,12 @@
 package br.com.tech.challenge.sistemapedido.infrastructure.integration.messaging;
 
 import br.com.tech.challenge.sistemapedido.application.dto.PedidoDTO;
+import br.com.tech.challenge.sistemapedido.application.events.PedidoPagoEventPublisher;
+import br.com.tech.challenge.sistemapedido.application.repository.PedidoRepository;
+import br.com.tech.challenge.sistemapedido.domain.event.PedidoPagoEvent;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.transfer.PagamentoConfirmadoTO;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.transfer.StatusPagamentoTO;
-import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +19,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PagamentoListener {
     private final ObjectMapper objectMapper;
-    private final PedidoGateway pedidoGateway;
+    private final PedidoRepository pedidoRepository;
+    private final PedidoPagoEventPublisher pedidoPagoPublisher;
 
     @RabbitListener(queues = {"${queue.filas.pagamentos_confirmados}"})
     public void receberPagamentosConfirmado(String message) throws JsonProcessingException {
         var pagamentoConfirmadoTO = objectMapper.readValue(message, PagamentoConfirmadoTO.class);
 
         if (pagamentoConfirmadoTO.statusPagamento().equals(StatusPagamentoTO.PAGO)) {
-            var pedido = pedidoGateway.buscarPorId(pagamentoConfirmadoTO.idPedido())
+            var pedido = pedidoRepository.findById(pagamentoConfirmadoTO.idPedido())
                     .orElseThrow(() -> new PedidoNaoEncontradoException(pagamentoConfirmadoTO.idPedido()));
 
             pedido.pagar();
-            pedidoGateway.pagar(pedido);
+            pedidoRepository.save(pedido);
+            pedidoPagoPublisher.publicar(new PedidoPagoEvent(pedido));
+
             log.info(String.format("Pedido %s alterado para o status pago", pedido.getId()));
         }
     }
@@ -36,11 +41,11 @@ public class PagamentoListener {
     @RabbitListener(queues = {"${queue.filas.pagamentos_nao_gerados}"})
     public void receberPagamentosNaoGerados(String message) throws JsonProcessingException {
         var pedidoDTO = objectMapper.readValue(message, PedidoDTO.class);
-        var pedido = pedidoGateway.buscarPorId(pedidoDTO.id())
+        var pedido = pedidoRepository.findById(pedidoDTO.id())
                 .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoDTO.id()));
 
         pedido.cancelar();
-        pedidoGateway.salvar(pedido);
+        pedidoRepository.save(pedido);
         log.info(String.format("Pedido %s alterado para o status cancelado devido a problemas com o pagamento", pedido.getId()));
     }
 }

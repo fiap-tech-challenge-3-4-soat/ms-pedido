@@ -30,8 +30,7 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,14 +69,14 @@ class PedidoResourceIT {
     @Autowired
     private ObjectMapper jsonMapper;
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @MockBean
     private MSProdutoHttpClient msProdutoHttpClient;
 
     @MockBean
     private PedidoQueue pedidoQueue;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -116,6 +115,8 @@ class PedidoResourceIT {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idPedido").isNumber());
+
+        verify(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
     }
 
     @Test

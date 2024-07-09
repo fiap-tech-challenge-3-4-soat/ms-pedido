@@ -7,6 +7,7 @@ import br.com.tech.challenge.sistemapedido.application.service.PagamentoService;
 import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.mspagamento.MSPagamentoHttpClient;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.*;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
@@ -66,6 +67,9 @@ class PagamentoResourceIT {
 
     @MockBean
     private MSPagamentoHttpClient msPagamentoHttpClient;
+
+    @MockBean
+    private PedidoQueue pedidoQueue;
 
     @Autowired
     private MockMvc mockMvc;
