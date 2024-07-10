@@ -24,10 +24,11 @@
         <sonar.organization>fiap-tech-challenge-3-4-soat</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.exclusions>
-            **/MsPagamentoApplication.java
-            **/infrastructure/config/**/*,
-            **/infrastructure/queue/**/*,
-            **/infrastructure/mapper/**/*,
+            src/main/java/br/com/tech/challenge/sistemapedido/MsPagamentoApplication.java
+            src/main/java/br/com/tech/challenge/sistemapedido/infrastructure/config/*.java
+            src/main/java/br/com/tech/challenge/sistemapedido/infrastructure/mapper/*.java
+            src/main/java/br/com/tech/challenge/sistemapedido/infrastructure/queue/*.java
+            src/main/java/br/com/tech/challenge/sistemapedido/infrastructure/exception/*.java
         </sonar.coverage.exclusions>
     </properties>
     <dependencies>
