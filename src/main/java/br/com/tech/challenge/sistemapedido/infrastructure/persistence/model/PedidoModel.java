@@ -1,7 +1,6 @@
 package br.com.tech.challenge.sistemapedido.infrastructure.persistence.model;
 
 import br.com.tech.challenge.sistemapedido.domain.StatusPedido;
-import br.com.tech.challenge.sistemapedido.domain.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +27,7 @@ public class PedidoModel {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private UsuarioModel usuario;
-    @OneToMany(mappedBy = "pedido")
     @Setter
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ItemPedidoModel> itens;
 }

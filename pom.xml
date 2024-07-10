@@ -106,7 +106,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
     </dependencies>
 
@@ -147,6 +147,9 @@
                         <exclude>**/SistemaPedidoApplication.class</exclude>
                         <exclude>**/infrastructure/security/**</exclude>
                         <exclude>**/infrastructure/persistence/**</exclude>
+                        <exclude>**/infrastructure/config/**</exclude>
+                        <exclude>**/infrastructure/queue/**</exclude>
+                        <exclude>**/infrastructure/mapper/**</exclude>
                     </excludes>
                 </configuration>
 

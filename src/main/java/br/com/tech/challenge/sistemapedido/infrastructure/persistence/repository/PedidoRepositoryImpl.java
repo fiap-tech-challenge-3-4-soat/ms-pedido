@@ -4,8 +4,8 @@ import br.com.tech.challenge.sistemapedido.application.repository.PedidoReposito
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.infrastructure.mapper.ItemPedidoModelMapper;
 import br.com.tech.challenge.sistemapedido.infrastructure.mapper.PedidoModelMapper;
-import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.ItemPedidoRepositoryJpa;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.PedidoRepositoryJpa;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PedidoRepositoryImpl implements PedidoRepository {
     private final PedidoRepositoryJpa pedidoRepository;
-    private final ItemPedidoRepositoryJpa itemPedidoRepository;
 
     private final PedidoModelMapper pedidoMapper;
     private final ItemPedidoModelMapper itemPedidoMapper;
@@ -38,20 +37,18 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public Pedido save(Pedido pedido) {
-        var pedidoModel = pedidoRepository.save(pedidoMapper.toModel(pedido));
+        var pedidoModel = pedidoMapper.toModel(pedido);
 
         var itensModel = pedido.getItens()
                 .stream()
                 .map(itemPedidoMapper::toModel)
-                .map(item -> {
-                    item.setPedido(pedidoModel);
-                    return item;
-                })
                 .toList();
 
-        itensModel = itemPedidoRepository.saveAll(itensModel);
         pedidoModel.setItens(itensModel);
+
+        pedidoModel = pedidoRepository.save(pedidoModel);
 
         return pedidoMapper.toDomain(pedidoModel);
     }

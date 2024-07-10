@@ -3,15 +3,10 @@ package br.com.tech.challenge.sistemapedido.infrastructure.service;
 import br.com.tech.challenge.sistemapedido.application.service.PagamentoService;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.exception.InternalErrorException;
-import br.com.tech.challenge.sistemapedido.domain.exception.SistemaPedidosAPIException;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.mspagamento.MSPagamentoHttpClient;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 @Service

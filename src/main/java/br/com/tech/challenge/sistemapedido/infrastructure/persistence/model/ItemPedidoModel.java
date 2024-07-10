@@ -1,9 +1,6 @@
 package br.com.tech.challenge.sistemapedido.infrastructure.persistence.model;
 
 import br.com.tech.challenge.sistemapedido.domain.Categoria;
-import br.com.tech.challenge.sistemapedido.domain.vo.Descricao;
-import br.com.tech.challenge.sistemapedido.domain.vo.Nome;
-import br.com.tech.challenge.sistemapedido.domain.vo.Preco;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,8 +24,8 @@ public class ItemPedidoModel {
     private BigDecimal preco;
     private Integer quantidade;
     private String observacao;
-    @ManyToOne
     @Setter
-    @JoinColumn(name = "id_pedido", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
     private PedidoModel pedido;
 }

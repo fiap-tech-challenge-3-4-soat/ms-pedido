@@ -25,7 +25,10 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(new InputErrorDTO(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({PedidoJaPagoException.class, PedidoNaoPagoException.class, PedidoStatusIncorretoException.class})
+    @ExceptionHandler({PedidoJaPagoException.class,
+            PedidoNaoPagoException.class,
+            PedidoStatusIncorretoException.class,
+            PedidoCanceladoException.class})
     public ResponseEntity<InputErrorDTO> pedidoJaPago(RuntimeException exception) {
         return new ResponseEntity<>(new InputErrorDTO(exception.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
@@ -47,8 +50,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    protected ResponseEntity<InputErrorDTO> handleBadCredentials(AuthenticationException exception) {
+    protected ResponseEntity<InputErrorDTO> handleAuthentication() {
 
-        return new ResponseEntity<>(new InputErrorDTO(exception.getMessage()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new InputErrorDTO("Credenciais inválidas"), HttpStatus.UNAUTHORIZED);
     }
 }

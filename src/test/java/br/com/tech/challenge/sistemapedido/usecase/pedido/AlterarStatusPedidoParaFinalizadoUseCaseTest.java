@@ -2,6 +2,7 @@ package br.com.tech.challenge.sistemapedido.usecase.pedido;
 
 import br.com.tech.challenge.sistemapedido.TestObjects;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
+import br.com.tech.challenge.sistemapedido.domain.exception.PedidoCanceladoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoPagoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoStatusIncorretoException;
@@ -79,6 +80,22 @@ class AlterarStatusPedidoParaFinalizadoUseCaseTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(PedidoNaoEncontradoException.class, () ->
+                underTest.executar(idPedido));
+
+        verify(gateway).buscarPorId(idPedido);
+        verify(gateway, never()).alterarStatus(any(Pedido.class));
+    }
+
+    @Test
+    void deveriaLancarExcecaoQuandoOPedidoEstiverCancelado() {
+        var pedido = TestObjects.getPedido();
+        var idPedido = pedido.getId();
+        pedido.cancelar();
+
+        when(gateway.buscarPorId(pedido.getId()))
+                .thenReturn(Optional.of(pedido));
+
+        assertThrows(PedidoCanceladoException.class, () ->
                 underTest.executar(idPedido));
 
         verify(gateway).buscarPorId(idPedido);

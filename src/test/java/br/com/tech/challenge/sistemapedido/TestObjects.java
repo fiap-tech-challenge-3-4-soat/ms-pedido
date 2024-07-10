@@ -17,7 +17,7 @@ public class TestObjects {
     public static Produto getProduto(String nome) {
         return Produto.builder()
                 .id(1L)
-                .nome(new Nome("Produto Teste"))
+                .nome(new Nome(nome))
                 .categoria(Categoria.LANCHE)
                 .descricao(new Descricao("Descrição Produto"))
                 .preco(new Preco(BigDecimal.TEN))

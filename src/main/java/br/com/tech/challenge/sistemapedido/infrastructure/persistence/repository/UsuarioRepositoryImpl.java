@@ -67,6 +67,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public Boolean existsByEmail(String email) {
-        return null;
+        return usuarioRepository.existsByEmail(email);
     }
 }

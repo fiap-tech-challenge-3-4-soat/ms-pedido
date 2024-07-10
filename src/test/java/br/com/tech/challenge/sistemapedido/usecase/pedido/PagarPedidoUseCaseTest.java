@@ -2,6 +2,7 @@ package br.com.tech.challenge.sistemapedido.usecase.pedido;
 
 import br.com.tech.challenge.sistemapedido.TestObjects;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
+import br.com.tech.challenge.sistemapedido.domain.exception.PedidoCanceladoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoJaPagoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
@@ -11,10 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.File;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -71,5 +71,21 @@ class PagarPedidoUseCaseTest {
 
         verify(pedidoGateway).buscarPorId(anyLong());
         verify(pedidoGateway, never()).pagar(any(Pedido.class));
+    }
+
+    @Test
+    void deveriaLancarExcecaoQuandoOPedidoEstiverCancelado() {
+        var pedido = TestObjects.getPedido();
+        var idPedido = pedido.getId();
+        pedido.cancelar();
+
+        when(pedidoGateway.buscarPorId(pedido.getId()))
+                .thenReturn(Optional.of(pedido));
+
+        assertThrows(PedidoCanceladoException.class, () ->
+                underTest.executar(idPedido));
+
+        verify(pedidoGateway).buscarPorId(idPedido);
+        verify(pedidoGateway, never()).alterarStatus(any(Pedido.class));
     }
 }

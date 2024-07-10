@@ -90,6 +90,11 @@ public class Pedido {
         this.pago = Boolean.TRUE;
     }
 
+    public void cancelar() {
+        this.pago = Boolean.FALSE;
+        this.status = StatusPedido.CANCELADO;
+    }
+
     public void preparar() {
         this.status = StatusPedido.EM_PREPARACAO;
     }

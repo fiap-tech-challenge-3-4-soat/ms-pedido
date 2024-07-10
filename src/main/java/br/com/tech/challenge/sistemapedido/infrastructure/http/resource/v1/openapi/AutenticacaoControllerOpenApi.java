@@ -3,6 +3,8 @@ package br.com.tech.challenge.sistemapedido.infrastructure.http.resource.v1.open
 import br.com.tech.challenge.sistemapedido.application.dto.InputErrorDTO;
 import br.com.tech.challenge.sistemapedido.application.request.AutenticarUsuarioRequest;
 import br.com.tech.challenge.sistemapedido.application.request.RegistrarUsuarioRequest;
+import br.com.tech.challenge.sistemapedido.application.response.AutenticarUsuarioResponse;
+import br.com.tech.challenge.sistemapedido.application.response.RegistrarUsuarioResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Autenticação", description = "Gerencia a autenticação")
 public interface AutenticacaoControllerOpenApi {
@@ -24,7 +25,7 @@ public interface AutenticacaoControllerOpenApi {
             )
 
     })
-    ResponseEntity<?> autenticarUsuario(@RequestBody AutenticarUsuarioRequest request);
+    ResponseEntity<AutenticarUsuarioResponse> autenticarUsuario(AutenticarUsuarioRequest request);
 
     @Operation(summary = "Registrar um novo usuário")
     @ApiResponses(value = {
@@ -34,7 +35,7 @@ public interface AutenticacaoControllerOpenApi {
             )
 
     })
-    ResponseEntity<?> registrarUsuario(@RequestBody RegistrarUsuarioRequest request);
+    ResponseEntity<RegistrarUsuarioResponse> registrarUsuario(RegistrarUsuarioRequest request);
 
 
 }

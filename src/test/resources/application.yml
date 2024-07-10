@@ -1,15 +1,21 @@
 spring:
+    autoconfigure:
+        exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:33080/sistema_pedidos_test?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
         password: rootsql
         username: root
-    
     flyway:
         locations: classpath:db/migration
     jpa:
         hibernate:
             ddl-auto: update
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: test
+        password: test
 app:
     jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
 app-jwt-expiration-milliseconds: 604800000
@@ -22,3 +28,12 @@ rest:
         ms-pagamento:
             url: http://localhost:8081
             context: v1
+            
+queue:
+    filas:
+        pedidos_criados: pedidos_criados
+        pagamentos_nao_gerados: pagamentos_nao_gerados-dlq
+        pagamentos_confirmados: pagamentos_confirmados
+    exchange:
+        fanoutPedido: pedidos.ex
+        deadLetterPedido: pagamentos.dlx

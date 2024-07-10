@@ -6,6 +6,7 @@ import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.domain.Papel;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.ConsultarProdutoResponse;
 import br.com.tech.challenge.sistemapedido.infrastructure.integration.rest.msproduto.MSProdutoHttpClient;
 import br.com.tech.challenge.sistemapedido.infrastructure.persistence.repository.jpa.*;
@@ -27,8 +28,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,11 +69,14 @@ class PedidoResourceIT {
     @Autowired
     private ObjectMapper jsonMapper;
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @MockBean
     private MSProdutoHttpClient msProdutoHttpClient;
+
+    @MockBean
+    private PedidoQueue pedidoQueue;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -102,6 +107,7 @@ class PedidoResourceIT {
 
         when(msProdutoHttpClient.obterProduto(anyLong()))
                 .thenReturn(ResponseEntity.of(Optional.of(consultaProdutoResponse)));
+        doNothing().when(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
 
         mockMvc.perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -109,6 +115,8 @@ class PedidoResourceIT {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idPedido").isNumber());
+
+        verify(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
     }
 
     @Test
@@ -165,11 +173,37 @@ class PedidoResourceIT {
     void deveriaFalharAoAlterarStatusDoPedidoParaEmPreparacaoComPedidoInvalido() throws Exception {
         var idPedido = 99999;
 
-        mockMvc.perform(patch(PATH + "/preparacao/{idPedido}", idPedido)
+        mockMvc.perform(patch(getUrl("preparacao"), idPedido)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
+    }
+
+    @Test
+    void deveriaFalharAoAlterarStatusDoPedidoParaProntoComPedidoInvalido() throws Exception {
+        var idPedido = 99999;
+
+        mockMvc.perform(patch(getUrl("pronto"), idPedido)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
+    }
+
+    @Test
+    void deveriaFalharAoAlterarStatusDoPedidoParaFinalizadoComPedidoInvalido() throws Exception {
+        var idPedido = 99999;
+
+        mockMvc.perform(patch(getUrl("finalizado"), idPedido)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
+    }
+
+    private String getUrl(String path) {
+        return PATH + "/" + path + "/{idPedido}" ;
     }
 
     @Test
@@ -206,17 +240,6 @@ class PedidoResourceIT {
     }
 
     @Test
-    void deveriaFalharAoAlterarStatusDoPedidoParaProntoComPedidoInvalido() throws Exception {
-        var idPedido = 99999;
-
-        mockMvc.perform(patch(PATH + "/pronto/{idPedido}", idPedido)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
-    }
-
-    @Test
     void deveriaAlterarStatusDoPedidoParaFinalizadoComSucesso() throws Exception {
         this.pedido.pagar();
         this.pedido.pronto();
@@ -247,17 +270,6 @@ class PedidoResourceIT {
                 )
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.mensagem").value("Pedido não está com o status Pronto"));
-    }
-
-    @Test
-    void deveriaFalharAoAlterarStatusDoPedidoParaFinalizadoComPedidoInvalido() throws Exception {
-        var idPedido = 99999;
-
-        mockMvc.perform(patch(PATH + "/finalizado/{idPedido}", idPedido)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.mensagem").value(String.format("Pedido não encontrado id: %d", idPedido)));
     }
 
     @Test

@@ -6,6 +6,7 @@ import br.com.tech.challenge.sistemapedido.application.mapper.ItemPedidoDataMapp
 import br.com.tech.challenge.sistemapedido.application.mapper.PedidoDataMapper;
 import br.com.tech.challenge.sistemapedido.application.request.PedidoRequest;
 import br.com.tech.challenge.sistemapedido.domain.*;
+import br.com.tech.challenge.sistemapedido.domain.queue.PedidoQueue;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PedidoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.ProdutoGateway;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
@@ -46,6 +47,9 @@ class PedidoControllerTest {
     private UsuarioGateway usuarioGateway;
 
     @Mock
+    private PedidoQueue pedidoQueue;
+
+    @Mock
     private PedidoDataMapper pedidoMapper;
 
     @Mock
@@ -74,6 +78,7 @@ class PedidoControllerTest {
                 .thenReturn(this.pedido);
         when(produtoGateway.buscarPorId(anyLong()))
                 .thenReturn(this.produto);
+        doNothing().when(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
 
         var response = underTest.criar(request);
 
@@ -83,6 +88,7 @@ class PedidoControllerTest {
         verify(pedidoGateway).salvar(any(Pedido.class));
         verify(produtoGateway).buscarPorId(anyLong());
         verify(usuarioGateway, never()).buscarPorCpf(anyString());
+        verify(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
     }
 
     @Test
@@ -98,6 +104,7 @@ class PedidoControllerTest {
                 .thenReturn(this.produto);
         when(usuarioGateway.buscarPorCpf(cpf))
                 .thenReturn(Optional.of(usuario));
+        doNothing().when(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
 
         var response = underTest.criar(request);
 
@@ -107,6 +114,7 @@ class PedidoControllerTest {
         verify(pedidoGateway).salvar(any(Pedido.class));
         verify(produtoGateway).buscarPorId(anyLong());
         verify(usuarioGateway).buscarPorCpf(cpf);
+        verify(pedidoQueue).publicarPedidoCriado(any(Pedido.class));
     }
 
     @Test
@@ -134,7 +142,7 @@ class PedidoControllerTest {
 
         var response = underTest.verificarStatus(idPedido);
 
-        assertThat(response.isPagamentoAprovado()).isTrue();
+        assertThat(response.getPagamentoAprovado()).isTrue();
 
         verify(pedidoGateway).buscarPorId(idPedido);
     }

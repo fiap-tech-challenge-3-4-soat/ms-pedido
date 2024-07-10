@@ -1,18 +1,14 @@
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
-        password: sistema_pedidos
         url: jdbc:mysql://localhost:33080/sistema_pedidos?useSSL=false&allowPublicKeyRetrieval=true
         username: sistema_pedidos
+        password: ${DB_PASSWORD}
     jpa:
         database-platform: org.hibernate.dialect.MySQL8Dialect
         defer-datasource-initialization: true
         hibernate:
             ddl-auto: update
-        properties:
-            hibernate:
-                format_sql: true
-                show_sql: true
     sql:
         init:
             continue-on-error: true
@@ -26,6 +22,11 @@ spring:
                     default-request-headers:
                         Authorization:
                             - Bearer TEST-6416668675808261-012515-7dac31f086dd3bdf5d7137ace77d0ad1-1654958216
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: admin
+        password: ${QUEUE_PASSWORD}
 
 app:
     jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
@@ -44,7 +45,12 @@ rest:
         ms-pagamento:
             url: http://localhost:8081
             context: v1
-            
-cache:
-    config:
-        ttl: 60
+
+queue:
+    filas:
+        pedidos_criados: pedidos_criados
+        pagamentos_nao_gerados: pagamentos_nao_gerados-dlq
+        pagamentos_confirmados: pagamentos_confirmados
+    exchange:
+        fanoutPedido: pedidos.ex
+        deadLetterPedido: pagamentos.dlx
