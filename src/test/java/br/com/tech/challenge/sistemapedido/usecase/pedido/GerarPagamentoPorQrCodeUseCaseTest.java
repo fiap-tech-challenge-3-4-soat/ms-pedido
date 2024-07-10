@@ -2,6 +2,7 @@ package br.com.tech.challenge.sistemapedido.usecase.pedido;
 
 import br.com.tech.challenge.sistemapedido.TestObjects;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
+import br.com.tech.challenge.sistemapedido.domain.exception.PedidoCanceladoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoJaPagoException;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.PagamentoGateway;
@@ -75,5 +76,21 @@ class GerarPagamentoPorQrCodeUseCaseTest {
         verify(pedidoGateway).buscarPorId(anyLong());
         verify(pagamentoGateway, never())
                 .gerarPagamentoPorQrCode(any(Pedido.class));
+    }
+
+    @Test
+    void deveriaLancarExcecaoQuandoOPedidoEstiverCancelado() {
+        var pedido = TestObjects.getPedido();
+        var idPedido = pedido.getId();
+        pedido.cancelar();
+
+        when(pedidoGateway.buscarPorId(pedido.getId()))
+                .thenReturn(Optional.of(pedido));
+
+        assertThrows(PedidoCanceladoException.class, () ->
+                underTest.executar(idPedido));
+
+        verify(pedidoGateway).buscarPorId(idPedido);
+        verify(pedidoGateway, never()).alterarStatus(any(Pedido.class));
     }
 }
