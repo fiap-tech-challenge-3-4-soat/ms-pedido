@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "ms-pagamento", url = "${rest.service.ms-pagamento.url}/${rest.service.ms-pagamento.context}")
 public interface MSPagamentoHttpClient {
 
-    @PostMapping("/pagamentos/{idPedido}")
+    @PostMapping("/pagamentos/{idPedido}/qrcode")
     ResponseEntity<byte[]> gerarQrCode(@PathVariable Long idPedido);
 }
