@@ -23,6 +23,7 @@
         <jacoco.version>0.8.8</jacoco.version>
         <sonar.organization>fiap-tech-challenge-3-4-soat</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sendgrid.version>4.10.2</sendgrid.version>
     </properties>
     <dependencies>
         <dependency>
@@ -107,6 +108,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sendgrid</groupId>
+            <artifactId>sendgrid-java</artifactId>
+            <version>${sendgrid.version}</version>
         </dependency>
     </dependencies>
 
