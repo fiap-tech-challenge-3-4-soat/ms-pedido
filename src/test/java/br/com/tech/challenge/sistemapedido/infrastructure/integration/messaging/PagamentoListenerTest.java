@@ -3,6 +3,7 @@ package br.com.tech.challenge.sistemapedido.infrastructure.integration.messaging
 import br.com.tech.challenge.sistemapedido.application.dto.PedidoDTO;
 import br.com.tech.challenge.sistemapedido.application.events.PedidoPagoEventPublisher;
 import br.com.tech.challenge.sistemapedido.application.repository.PedidoRepository;
+import br.com.tech.challenge.sistemapedido.application.service.NotificacaoService;
 import br.com.tech.challenge.sistemapedido.domain.Pedido;
 import br.com.tech.challenge.sistemapedido.domain.event.PedidoPagoEvent;
 import br.com.tech.challenge.sistemapedido.domain.exception.PedidoNaoEncontradoException;
@@ -43,6 +44,9 @@ class PagamentoListenerTest {
 
     @Mock
     private PedidoPagoEventPublisher pedidoPagoPublisher;
+
+    @Mock
+    private NotificacaoService notificacaoService;
 
     @InjectMocks
     private PagamentoListener underTest;

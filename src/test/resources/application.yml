@@ -37,3 +37,6 @@ queue:
     exchange:
         fanoutPedido: pedidos.ex
         deadLetterPedido: pagamentos.dlx
+        
+sendgrid:
+    api-key:
