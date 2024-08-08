@@ -25,7 +25,6 @@ public class PagamentoListener {
     private final PedidoRepository pedidoRepository;
     private final PedidoPagoEventPublisher pedidoPagoPublisher;
     private final NotificacaoService notificacaoService;
-    private final UsuarioRepositoryJpa usuarioRepositoryJpa;
 
     @RabbitListener(queues = {"${queue.filas.pagamentos_confirmados}"})
     public void receberPagamentosConfirmado(String message) throws JsonProcessingException {
