@@ -46,6 +46,10 @@ public class PedidoRepositoryImpl implements PedidoRepository {
                 .map(itemPedidoMapper::toModel)
                 .toList();
 
+        for (var itemModel : itensModel) {
+            itemModel.setPedido(pedidoModel);
+        }
+
         pedidoModel.setItens(itensModel);
 
         pedidoModel = pedidoRepository.save(pedidoModel);
