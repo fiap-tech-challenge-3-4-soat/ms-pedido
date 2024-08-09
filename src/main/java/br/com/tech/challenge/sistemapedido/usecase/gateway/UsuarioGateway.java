@@ -21,4 +21,6 @@ public interface UsuarioGateway {
     String autenticar(String cpf, String senha);
 
     Usuario registrar(Usuario usuario);
+
+    void cancelar(String cpf, String nome, String endereco, String numeroDeTelefone, String informacaoDePagamento);
 }

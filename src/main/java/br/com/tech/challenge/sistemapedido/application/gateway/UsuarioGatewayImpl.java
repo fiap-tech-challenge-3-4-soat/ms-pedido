@@ -58,4 +58,9 @@ public class UsuarioGatewayImpl implements UsuarioGateway {
     public Usuario registrar(Usuario usuario) {
         return autenticacaoService.registrar(usuario);
     }
+
+    @Override
+    public void cancelar(String cpf, String nome, String endereco, String numeroDeTelefone, String informacaoDePagamento) {
+
+    }
 }

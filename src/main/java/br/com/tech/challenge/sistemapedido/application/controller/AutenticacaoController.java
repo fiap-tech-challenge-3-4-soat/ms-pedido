@@ -3,6 +3,7 @@ package br.com.tech.challenge.sistemapedido.application.controller;
 import br.com.tech.challenge.sistemapedido.domain.Usuario;
 import br.com.tech.challenge.sistemapedido.usecase.gateway.UsuarioGateway;
 import br.com.tech.challenge.sistemapedido.usecase.usuario.AutenticarUsuarioUseCase;
+import br.com.tech.challenge.sistemapedido.usecase.usuario.CancelarContaUsuarioUseCase;
 import br.com.tech.challenge.sistemapedido.usecase.usuario.RegistrarUsuarioUseCase;
 import jakarta.inject.Named;
 
@@ -24,5 +25,11 @@ public class AutenticacaoController {
         var registrarUsuarioUseCase = new RegistrarUsuarioUseCase(this.usuarioGateway);
 
         return registrarUsuarioUseCase.executar(usuario);
+    }
+
+    public void cancelarContaUsuario(String cpf, String nome, String endereco, String numeroDeTelefone, String informacaoDePagamento) {
+        var cancelarContaUsuarioUseCase = new CancelarContaUsuarioUseCase(this.usuarioGateway);
+
+        cancelarContaUsuarioUseCase.executar(cpf, nome, endereco, numeroDeTelefone, informacaoDePagamento);
     }
 }

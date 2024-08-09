@@ -30,6 +30,7 @@ public class UsuarioModel {
     @Email
     private String email;
     private String senha;
+    private boolean ativo;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "usuario_papeis",

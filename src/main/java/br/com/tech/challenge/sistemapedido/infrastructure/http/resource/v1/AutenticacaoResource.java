@@ -3,6 +3,7 @@ package br.com.tech.challenge.sistemapedido.infrastructure.http.resource.v1;
 import br.com.tech.challenge.sistemapedido.application.controller.AutenticacaoController;
 import br.com.tech.challenge.sistemapedido.application.mapper.UsuarioDataMapper;
 import br.com.tech.challenge.sistemapedido.application.request.AutenticarUsuarioRequest;
+import br.com.tech.challenge.sistemapedido.application.request.CancelarUsuarioRequest;
 import br.com.tech.challenge.sistemapedido.application.request.RegistrarUsuarioRequest;
 import br.com.tech.challenge.sistemapedido.application.response.AutenticarUsuarioResponse;
 import br.com.tech.challenge.sistemapedido.application.response.RegistrarUsuarioResponse;
@@ -38,6 +39,14 @@ public class AutenticacaoResource implements AutenticacaoControllerOpenApi {
         var resposta = new RegistrarUsuarioResponse(usuario.getId());
 
         return new ResponseEntity<>(resposta, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/cancelar")
+    public ResponseEntity<Void> cancelarContaUsuario(@RequestBody CancelarUsuarioRequest request) {
+        controller.cancelarContaUsuario(request.cpf(), request.nome(), request.endereco(), request.numeroDeTelefone(),
+                request.informacaoDePagamento());
+
+        return ResponseEntity.ok().build();
     }
 
 }
